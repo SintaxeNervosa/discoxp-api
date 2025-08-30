@@ -12,4 +12,8 @@ public class Stockist extends User {
 
     @Column(nullable = false, unique = true, length = 8)
     private String cpf;
+
+    public Stockist(String name, String email, String password, Group groupEnum) {
+        super(name, email, password, groupEnum);
+    }
 }
