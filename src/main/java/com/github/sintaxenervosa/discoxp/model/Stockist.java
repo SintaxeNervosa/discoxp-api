@@ -10,11 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity()
 public class Stockist extends User {
-
-        @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     @Column(nullable = false, unique = true, length = 11)
     private String cpf;
 

@@ -5,21 +5,29 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "clients")
+@Data
+@Table(name = "tb_client")
 public class Client extends User {
-    private final Group group = Group.CLIENT;
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    
-    public Client(String name, String email, String password) {
-        super( name, email, password);
+
+    public Client(String name, String email, String password, Group group) {
+        super(name, email, password);
+
     }
-    
-    public Group getGroup() {
-        return group;
+
+    public Client(Long id, String name, String email, String password, boolean status, Group groupEnum, Group group) {
+        super(id, name, email, password, status, groupEnum);
+
+    }
+
+    public Client(Group group) {
+    }
+
+    public Client() {
+
     }
 }
