@@ -1,7 +1,9 @@
 package com.github.sintaxenervosa.discoxp.model;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +11,8 @@ import lombok.NoArgsConstructor;
 @MappedSuperclass
 @NoArgsConstructor
 public class User {
+
+
     @Column(nullable = false, length = 100)
     private String name;
 
@@ -22,12 +26,11 @@ public class User {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Group groupEnum;
+    protected Group groupEnum;
 
-    public User(String name, String email, String password, Group groupEnum) {
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.groupEnum = groupEnum;
     }
 }

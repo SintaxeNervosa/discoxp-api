@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity()
 public class Stockist extends User {
 
-    @Id
+        @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
@@ -19,7 +19,7 @@ public class Stockist extends User {
     private String cpf;
 
     public Stockist(StockistRequestDto stockist) {
-        super(stockist.name(), stockist.email(), stockist.password(), stockist.group());
+        super(stockist.name(), stockist.email(), stockist.password());
         cpf = stockist.cpf();
     }
 }

@@ -1,12 +1,19 @@
 package com.github.sintaxenervosa.discoxp.validations;
 
-import com.github.sintaxenervosa.discoxp.dto.error.user.UsernameException;
-import lombok.AllArgsConstructor;
+import java.util.Optional;
+
 import org.apache.commons.validator.routines.EmailValidator;
+
+import com.github.sintaxenervosa.discoxp.dto.LoginRequestDto;
+import com.github.sintaxenervosa.discoxp.dto.error.user.UsernameException;
+import com.github.sintaxenervosa.discoxp.model.User;
+import com.github.sintaxenervosa.discoxp.repository.UserRepository;
+
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class UserValidation extends Validation {
-
+    private UserRepository userRepository;
     private EmailValidator emailValidator;
 
     public void isNameValid(String username) {
@@ -26,5 +33,13 @@ public class UserValidation extends Validation {
     }
 
 
-
+      public UserValidation(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
+    
+    public Optional<User> login(LoginRequestDto loginRequestDto){
+        Optional<User> userEmail = userRepository.findByEmail(loginRequestDto.email());
+        //mais validaçoes
+        return userEmail;
+    }
 }
