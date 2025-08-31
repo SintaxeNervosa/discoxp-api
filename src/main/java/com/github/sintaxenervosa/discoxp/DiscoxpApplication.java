@@ -1,5 +1,6 @@
 package com.github.sintaxenervosa.discoxp;
 
+import com.github.sintaxenervosa.discoxp.security.DotenvInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -13,8 +14,9 @@ public class DiscoxpApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(DiscoxpApplication.class);
 	public static void main(String[] args) {
-		SpringApplication.run(DiscoxpApplication.class, args);
-		logger.info("\nBackend rodando com exito");
+		SpringApplication app = new SpringApplication(DiscoxpApplication.class);
+		app.addInitializers(new DotenvInitializer());
+		app.run(args);
+		logger.info("\nAPI rodando na porta 8080");
 	}
-
 }

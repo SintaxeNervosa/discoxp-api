@@ -11,23 +11,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
 @Table(name = "tb_client")
-public class Client extends User {
-
-    public Client(String name, String email, String password, Group group) {
-        super(name, email, password);
-
-    }
-
-    public Client(Long id, String name, String email, String password, boolean status, Group groupEnum, Group group) {
-        super(id, name, email, password, status, groupEnum);
-
-    }
-
-    public Client(Group group) {
-    }
-
-    public Client() {
-
-    }
-}
+public class Client extends User { }
