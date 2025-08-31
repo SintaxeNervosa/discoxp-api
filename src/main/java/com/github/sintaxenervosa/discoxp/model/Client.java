@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tb_client")
-public class Client extends User { }
+public class Client extends User {
+    private String cpf;
+}

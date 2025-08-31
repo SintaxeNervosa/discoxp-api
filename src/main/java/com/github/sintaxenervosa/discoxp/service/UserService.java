@@ -8,7 +8,6 @@ import com.github.sintaxenervosa.discoxp.dto.LoginRequestDto;
 import com.github.sintaxenervosa.discoxp.model.User;
 import com.github.sintaxenervosa.discoxp.repository.StockistRepository;
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
-import com.github.sintaxenervosa.discoxp.validations.UserValidation;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -17,12 +16,11 @@ import lombok.NoArgsConstructor;
 @Service
 public class UserService {
     private UserRepository userRepository;
-    private UserValidation userValidation;
 
     private StockistRepository stockistRepository;
 
     public Optional<User> login(LoginRequestDto loginRequest){
         System.out.println("Vamos lá logando...");
-        return userValidation.login(loginRequest);
+        return null;
     }
 }
