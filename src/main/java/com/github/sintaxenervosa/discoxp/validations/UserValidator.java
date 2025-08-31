@@ -6,7 +6,11 @@ public interface UserValidator<T extends User> extends Validator<T>, NameValidat
 
     default void validate(T object) {
         validateName(object.getName());
-        validateEmail(object.getEmail());
+        try {
+            validateEmail(object.getEmail());
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
         validatePassword(object.getPassword());
     }
 
