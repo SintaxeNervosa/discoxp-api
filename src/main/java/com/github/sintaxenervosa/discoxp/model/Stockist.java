@@ -14,7 +14,7 @@ public class Stockist extends User {
     private String cpf;
 
     public Stockist(StockistRequestDto stockist) {
-        super(stockist.name(), stockist.email(), stockist.password());
+        super(stockist.name(), stockist.email(), stockist.password(), Group.STOCKIST);
         cpf = stockist.cpf();
     }
 }

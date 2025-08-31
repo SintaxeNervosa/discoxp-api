@@ -12,6 +12,6 @@ import lombok.AllArgsConstructor;
 public class Admin extends User {
 
     public Admin(AdminRequestDto admin) {
-        super(admin.name(), admin.email(), admin.password());
+        super(admin.name(), admin.email(), admin.password(), Group.ADMIN);
     }
 }

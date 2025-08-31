@@ -32,9 +32,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     protected Group groupEnum;
 
-    public User(String name, String email, String password) {
+    public User(String name, String email, String password, Group groupEnum) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.groupEnum = groupEnum;
     }
 }

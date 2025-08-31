@@ -6,15 +6,19 @@ import com.github.sintaxenervosa.discoxp.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@AllArgsConstructor
 @Component
-public class StockistValidator implements UserValidator<Stockist>, CpfValidator {
-    private UserRepository userRepository;
-    private CpfHolderRepository cpfHolderRepository;
+@AllArgsConstructor
+public class StockistValidator implements Validator<Stockist>, EmailValidator, PasswordValidator, NameValidator, CpfValidator {
+
+    private final UserRepository userRepository;
+    private final CpfHolderRepository cpfHolderRepository;
 
     @Override
-    public UserRepository getUserRepository() {
-        return userRepository; // necessário para a validação de e-mail
+    public void validate(Stockist stockist) throws IllegalAccessException {
+        validateEmail(stockist.getEmail());
+        validatePassword(stockist.getPassword());
+        validateName(stockist.getName());
+        validateCpf(stockist.getCpf());
     }
 
     @Override
@@ -22,5 +26,8 @@ public class StockistValidator implements UserValidator<Stockist>, CpfValidator 
         return cpfHolderRepository;
     }
 
-    //demais métodos
+    @Override
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
 }
