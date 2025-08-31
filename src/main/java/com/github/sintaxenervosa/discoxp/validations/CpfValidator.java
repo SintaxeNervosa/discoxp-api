@@ -7,6 +7,6 @@ public interface CpfValidator {
     CpfHolderRepository getCpfHolderRepository();
 
     default void validate(String cpf) {
-        //
+        getCpfHolderRepository().existsByCpf("");
     }
 }
