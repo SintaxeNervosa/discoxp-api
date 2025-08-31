@@ -23,6 +23,4 @@ public class AdminController {
     public void registerUser(@RequestBody StockistRequestDto  stockist) {
         adminService.create(stockist);
     }
-
-
 }
