@@ -1,9 +1,15 @@
 package com.github.sintaxenervosa.discoxp.dto;
 
+import com.github.sintaxenervosa.discoxp.model.Group;
 import com.github.sintaxenervosa.discoxp.model.User;
 
-public record LoginResponseDto(Long id) {
+public record LoginResponseDto(Long id, Group group) {
     public static LoginResponseDto fromEntity(User user){
-        return new LoginResponseDto(1l);
+        return new LoginResponseDto(user.getId(), user.getGroupEnum());
+    }
+
+    public String email() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'email'");
     }
 }
