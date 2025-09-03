@@ -38,4 +38,39 @@ public class UserController {
             .body(Map.of("error", e.getMessage()));
         }
     }
+
+    // @GetMapping
+    // public List<User> listar() {
+    //     return userService.findAllUsers();
+    // }
+
+    // @GetMapping("/{id}")
+    // public ResponseEntity<User> buscarPorId(@PathVariable Long id) {
+    //     return userService.findUserById(id)
+    //             .map(ResponseEntity::ok)
+    //             .orElse(ResponseEntity.notFound().build());
+    // }
+
+    // @PostMapping
+    // public ResponseEntity<User> salvar(@RequestBody User user) {
+    //     return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(user));
+    // }
+
+    // @PutMapping("/{id}")
+    // public ResponseEntity<User> alterar(@PathVariable Long id, @RequestBody User user) {
+    //     try {
+    //         return ResponseEntity.ok(userService.updateUser(id, user));
+    //     } catch (RuntimeException e) {
+    //         return ResponseEntity.notFound().build();
+    //     }
+    // }
+
+    // @PatchMapping("/{id}/status")
+    // public ResponseEntity<User> alterarStatus(@PathVariable Long id) {
+    //     try {
+    //         return ResponseEntity.ok(userService.statsUser(id));
+    //     } catch (RuntimeException e) {
+    //         return ResponseEntity.notFound().build();
+    //     }
+    // }
 }
