@@ -4,9 +4,10 @@ import com.github.sintaxenervosa.discoxp.repository.UserRepository;
 
 public interface EmailValidator {
 
-    UserRepository getUserRepository(); // para quem implementar, é necessario fornecer
+    UserRepository userRepository(); // para quem implementar, é necessario fornecer
 
-    default void validateEmail(String email) throws IllegalAccessException { // implementacao
+    // Valida o formato do e-mail
+    default void validateFormatEmail(String email) throws IllegalAccessException { // implementacao
        if(email == null || email.isBlank()){
            throw new IllegalAccessException("E-mai não pode ser vazio");
        }
@@ -15,9 +16,9 @@ public interface EmailValidator {
        if(!email.matches(emailRegex)){
            throw new IllegalAccessException("Formato de e-mail inválido");
        }
+    }
 
-       if(getUserRepository().existsByEmail(email)){
-           throw new IllegalAccessException("E-mail já cadastrado");
-       }
+    default boolean validateExistsByEmail(String email) {
+        return userRepository().existsByEmail(email);
     }
 }
