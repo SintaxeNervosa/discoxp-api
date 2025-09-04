@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "tb_user")
 @Entity()
 public class User {
@@ -33,7 +32,7 @@ public class User {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    protected Group groupEnum;
+    private Group groupEnum;
 
     public User(String name, String email, String password, Group groupEnum) {
         this.name = name;
