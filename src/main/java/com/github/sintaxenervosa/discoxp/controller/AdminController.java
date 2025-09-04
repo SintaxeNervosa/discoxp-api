@@ -22,7 +22,6 @@ public class AdminController {
 
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody UpdateUserRequestDTO request) {
-        System.out.println("CONTROLLER " + request.group());
         userService.updateUser(request);
         return ResponseEntity.status(201).body("Usuário alterado");
     };

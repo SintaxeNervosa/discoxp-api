@@ -23,7 +23,7 @@ public class UserService {
     }
 
     public void createUser(CreateUserRequestDTO request) {
-        userValidator.validatePassword(request.password());
+
         // ...
         // userRepository.save(user);
     }

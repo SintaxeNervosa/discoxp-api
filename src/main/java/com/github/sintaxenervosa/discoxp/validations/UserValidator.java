@@ -22,6 +22,44 @@ public class UserValidator implements Validator, EmailValidator, PasswordValidat
 
     @Override
     public void validateUserCreation(CreateUserRequestDTO request) {
+        getErrorsSingleton(); // criar (se necessário) uma única instância da lista
+
+        try {
+            validateName(request.name());
+        } catch (InvalidUserDataException e) {
+            errorsSingleton.add(e.getMessage());
+        }
+
+        try {
+            validateFormatEmail(request.email());
+            if(validateExistsByEmail(request.email())) {
+                throw new InvalidUserDataException("Email invalido");
+            }
+
+        } catch (InvalidUserDataException e) {
+            errorsSingleton.add(e.getMessage());
+        }
+
+        try {
+            validatePassword(request.password());
+        } catch (InvalidUserDataException e) {
+            errorsSingleton.add(e.getMessage());
+        }
+
+        try {
+            validateFormatCpf(request.cpf());
+            if (!validateExistsByCpf(request.cpf())) {
+                throw new InvalidUserDataException("Cpf invalido");
+            }
+        } catch (InvalidUserDataException e) {
+            errorsSingleton.add(e.getMessage());
+        }
+
+        try {
+            validateGroup(Group.valueOf(request.group()));
+        } catch (InvalidUserDataException e) {
+            errorsSingleton.add(e.getMessage());
+        }
 
     }
 

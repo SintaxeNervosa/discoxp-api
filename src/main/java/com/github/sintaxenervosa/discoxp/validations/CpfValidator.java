@@ -4,6 +4,7 @@ import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
 import top.colman.simplecpfvalidator.CpfValidatorKt;
 
+
 import java.util.List;
 
 public interface CpfValidator {
@@ -12,7 +13,7 @@ public interface CpfValidator {
     default void validateFormatCpf(String cpf) {
 
         //isCpf(CPF, Caracteres a serem ignorados em caso de cpf com máscara (111.111.111-11))
-        if(!CpfValidatorKt.isCpf(cpf, List.of())) { // Valida o formato do CPF
+        if(!CpfValidatorKt.isCpf(cpf, List.of('.', '-'))) { // Valida o formato do CPF
             throw new InvalidUserDataException(("CPF inválido"));
         }
     }
