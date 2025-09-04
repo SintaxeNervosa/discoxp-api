@@ -10,12 +10,13 @@ public class UserService {
 
     private UserValidator userValidator;
 
-
     public UserService(UserValidator userValidator){
         this.userValidator = userValidator;
     }
 
     public void createUser(CreateUserRequestDTO request) {
-
+        userValidator.validatePassword(request.password());
+        // ...
+        // userRepository.save(user);
     }
 }
