@@ -1,40 +1,53 @@
 package com.github.sintaxenervosa.discoxp.service;
 
-import java.util.List;
-import java.util.Optional;
+import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
+import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
+import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
+import com.github.sintaxenervosa.discoxp.exception.user.UserNotFoundExeption;
+import com.github.sintaxenervosa.discoxp.model.Group;
+import com.github.sintaxenervosa.discoxp.model.User;
+import com.github.sintaxenervosa.discoxp.repository.UserRepository;
+import com.github.sintaxenervosa.discoxp.validations.UserValidator;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.github.sintaxenervosa.discoxp.dto.LoginRequestDto;
 import com.github.sintaxenervosa.discoxp.dto.LoginResponseDto;
-import com.github.sintaxenervosa.discoxp.model.User;
-import com.github.sintaxenervosa.discoxp.repository.UserRepository;
-import com.github.sintaxenervosa.discoxp.validations.LoginValidator;
 
-import lombok.RequiredArgsConstructor;
-@RequiredArgsConstructor
+import java.util.List;
+import java.util.Optional;
+
+
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
-    private final LoginValidator loginValidator;
+    private final UserValidator userValidator;
+    private final PasswordEncoder  passwordEncoder;
 
-    public Optional<LoginResponseDto> login(LoginRequestDto loginRequest) throws IllegalAccessException{
-        Optional<User> user = userRepository.findByEmail(loginRequest.email());
-
-        if (user.isEmpty()) {
-            return Optional.empty();
-        }
-
-        User usuario = user.get();
-
-        //      if (!passwordEncoder.matches(loginRequest.password(), usuario.getPassword())) {
-        //     return Optional.empty(); Depois uso o passwordEncoder
-        // }
-
-        loginValidator.validate(usuario);
-
-       return Optional.of(LoginResponseDto.fromEntity(usuario)); 
+    public UserService(UserValidator userValidator, UserRepository userRepository, PasswordEncoder passwordEncoder){
+        this.userValidator = userValidator;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
+
+    public void createUser(CreateUserRequestDTO request) {
+        userValidator.validateUserCreation(request);
+        String encodedPassword = passwordEncoder.encode(request.password());
+        User user = new User(request);
+
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
+    }
+
+    public LoginResponseDto loginUser(LoginRequestDto request){
+        userValidator.validateLogin(request);
+
+        User user = userRepository.findByEmail(request.email()).get();
+        return LoginResponseDto.fromEntity(user);
+    }
+
 
     //Listar todos os usuários
     public List<User> findAllUsers() {
@@ -46,33 +59,37 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    //Incluir usuário
-    public User saveUser(User user){
-        return userRepository.save(user);
+
+
+    public void updateUser(UpdateUserRequestDTO request) {
+        if(request.id() == null || request.id().isEmpty()) {
+            throw new InvalidUserDataException("Informe o id");
+        }
+
+        long id = 0;
+
+        try {
+            id = Long.parseLong(request.id());
+        } catch (NumberFormatException e) {
+            throw new InvalidUserDataException("ID inválido");
+        }
+
+        User savedUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundExeption("Usuário não encontrado"));
+
+        userValidator.validateUserUpdate(savedUser, request); // realiza todas as validações para editar
+
+        User newUser = new User();
+        // dados que não se alteram
+        newUser.setId(savedUser.getId());
+        newUser.setEmail(savedUser.getEmail());
+        newUser.setPassword(savedUser.getPassword());
+
+        // dados que se alteram
+        newUser.setName(request.name());
+        newUser.setCpf(request.cpf());
+        newUser.setGroupEnum(Group.valueOf(request.group()));
+
+        userRepository.save(newUser);
     }
-
-    //Alternar usuário
-    public User updateUser(Long id, User dados) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setName(dados.getName());
-                    user.setEmail(dados.getEmail());
-                    user.setPassword(dados.getPassword());
-                    user.setGroupEnum(dados.getGroupEnum());
-                    return userRepository.save(user);
-                })
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com id: " + id));
-
-    }
-
-    //Habilitar ou desabilitar usuário
-    public User statsUser(Long id) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setStatus(!user.isStatus());
-                    return userRepository.save(user);
-                })
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com id: " + id));
-    }
-
 }

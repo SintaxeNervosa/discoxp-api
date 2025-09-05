@@ -2,8 +2,6 @@ package com.github.sintaxenervosa.discoxp;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,7 @@ import com.github.sintaxenervosa.discoxp.security.DotenvInitializer;
 @EnableCaching
 @EnableScheduling
 public class DiscoxpApplication {
-
+    
     private static final Logger logger = LoggerFactory.getLogger(DiscoxpApplication.class);
     
     @Autowired
@@ -65,6 +63,4 @@ public class DiscoxpApplication {
             protocol, hostAddress, serverPort, contextPath
         );
     }
-    
-    
 }

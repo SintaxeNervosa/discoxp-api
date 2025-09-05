@@ -7,9 +7,4 @@ public record LoginResponseDto(Long id, Group group) {
     public static LoginResponseDto fromEntity(User user){
         return new LoginResponseDto(user.getId(), user.getGroupEnum());
     }
-
-    public String email() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'email'");
-    }
 }
