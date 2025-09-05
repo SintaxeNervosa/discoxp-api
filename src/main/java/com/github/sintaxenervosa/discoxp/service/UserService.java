@@ -8,6 +8,7 @@ import com.github.sintaxenervosa.discoxp.model.Group;
 import com.github.sintaxenervosa.discoxp.model.User;
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
 import com.github.sintaxenervosa.discoxp.validations.UserValidator;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -16,16 +17,20 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserValidator userValidator;
+    private final PasswordEncoder  passwordEncoder;
 
-    public UserService(UserValidator userValidator, UserRepository userRepository){
+    public UserService(UserValidator userValidator, UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userValidator = userValidator;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void createUser(CreateUserRequestDTO request) {
-
-        // ...
-        // userRepository.save(user);
+        userValidator.validateUserCreation(request);
+        String encodedPassword = passwordEncoder.encode(request.password());
+        User user = new User(request);
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
     }
 
     public void updateUser(UpdateUserRequestDTO request) {

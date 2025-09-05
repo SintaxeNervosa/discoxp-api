@@ -48,7 +48,7 @@ public class UserValidator implements Validator, EmailValidator, PasswordValidat
 
         try {
             validateFormatCpf(request.cpf());
-            if (!validateExistsByCpf(request.cpf())) {
+            if (validateExistsByCpf(request.cpf())) {
                 throw new InvalidUserDataException("Cpf invalido");
             }
         } catch (InvalidUserDataException e) {
@@ -61,6 +61,17 @@ public class UserValidator implements Validator, EmailValidator, PasswordValidat
             errorsSingleton.add(e.getMessage());
         }
 
+        if(errorsSingleton.isEmpty()) {
+            return;
+        }
+
+        StringBuilder errorMessage = new  StringBuilder(errorsSingleton.size());
+        for(String error: errorsSingleton){
+            errorMessage.append(error).append(", ");
+        }
+
+        errorsSingleton.clear();
+        throw new InvalidUserDataException(errorMessage.toString());
     }
 
     @Override

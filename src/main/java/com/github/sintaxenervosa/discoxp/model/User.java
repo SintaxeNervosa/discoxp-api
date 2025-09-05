@@ -1,5 +1,6 @@
 package com.github.sintaxenervosa.discoxp.model;
 
+import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,5 +40,13 @@ public class User {
         this.email = email;
         this.password = password;
         this.groupEnum = groupEnum;
+    }
+
+    public User(CreateUserRequestDTO userRequest){
+        this.name = userRequest.name();
+        this.email = userRequest.email();
+        this.password = userRequest.password();
+        this.cpf = userRequest.cpf();
+        this.groupEnum = Group.valueOf(userRequest.group());
     }
 }
