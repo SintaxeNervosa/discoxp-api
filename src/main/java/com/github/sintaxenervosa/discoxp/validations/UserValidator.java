@@ -1,5 +1,12 @@
 package com.github.sintaxenervosa.discoxp.validations;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.util.InvalidUrlException;
+
 import com.github.sintaxenervosa.discoxp.dto.LoginRequestDto;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
@@ -7,18 +14,21 @@ import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException
 import com.github.sintaxenervosa.discoxp.model.Group;
 import com.github.sintaxenervosa.discoxp.model.User;
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Component
-@AllArgsConstructor
-public class UserValidator implements Validator, EmailValidator, PasswordValidator, NameValidator, CpfValidator, GroupValidator {
+public class UserValidator
+        implements Validator, EmailValidator, PasswordValidator, NameValidator, CpfValidator, GroupValidator {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private static List<String> errorsSingleton;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserValidator(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public void validateUserCreation(CreateUserRequestDTO request) {
@@ -32,7 +42,7 @@ public class UserValidator implements Validator, EmailValidator, PasswordValidat
 
         try {
             validateFormatEmail(request.email());
-            if(validateExistsByEmail(request.email())) {
+            if (validateExistsByEmail(request.email())) {
                 throw new InvalidUserDataException("Email invalido");
             }
 
@@ -63,12 +73,12 @@ public class UserValidator implements Validator, EmailValidator, PasswordValidat
             errorsSingleton.add("Grupo invalido");
         }
 
-        if(errorsSingleton.isEmpty()) {
+        if (errorsSingleton.isEmpty()) {
             return;
         }
 
-        StringBuilder errorMessage = new  StringBuilder(errorsSingleton.size());
-        for(String error: errorsSingleton){
+        StringBuilder errorMessage = new StringBuilder(errorsSingleton.size());
+        for (String error : errorsSingleton) {
             errorMessage.append(error).append(", ");
         }
 
@@ -82,44 +92,50 @@ public class UserValidator implements Validator, EmailValidator, PasswordValidat
 
         try {
             // validação de nome caso diferentes
-            if(!savedUser.getName().equals(request.name())) {
+            if (!savedUser.getName().equals(request.name())) {
                 validateName(request.name());
-            };
+            }
+            ;
         } catch (InvalidUserDataException e) {
             errorsSingleton.add(e.getMessage()); // adiciona o erro a lista de erros
-        };
+        }
+        ;
 
         try {
             Group group = Group.valueOf(request.group());
-            if(!savedUser.getGroupEnum().equals(group)) {
+            if (!savedUser.getGroupEnum().equals(group)) {
                 validateGroup(group);
-            };
+            }
+            ;
         } catch (InvalidUserDataException e) {
             errorsSingleton.add(e.getMessage());
         } catch (IllegalArgumentException e) {
             errorsSingleton.add("Grupo inválido");
-        };
+        }
+        ;
 
         try {
-            if(!savedUser.getCpf().equals(request.cpf())) {
+            if (!savedUser.getCpf().equals(request.cpf())) {
                 validateFormatCpf(request.cpf()); // valida o formato do cpf
 
-                if(validateExistsByCpf(request.cpf())) {
+                if (validateExistsByCpf(request.cpf())) {
                     throw new InvalidUserDataException("CPF inválido"); // valida se existe em outro usuário
-                };
-            };
+                }
+                ;
+            }
+            ;
         } catch (InvalidUserDataException e) {
             errorsSingleton.add(e.getMessage());
         }
 
         StringBuilder errorMessage = new StringBuilder(errorsSingleton.size());
 
-        for(String message : errorsSingleton) {
+        for (String message : errorsSingleton) {
             errorMessage.append(message).append(", ");
         }
 
         // verifica se há erros
-        if(!errorMessage.isEmpty()) {
+        if (!errorMessage.isEmpty()) {
             errorsSingleton.clear(); // limpa o array
             throw new InvalidUserDataException(errorMessage.toString()); // lança um exceção dos os erros
         }
@@ -132,8 +148,42 @@ public class UserValidator implements Validator, EmailValidator, PasswordValidat
     }
 
     @Override
-    public void validateLogin(LoginRequestDto request) {
+    public void validateLogin(LoginRequestDto value) {
+        getErrorsSingleton();
+        User user = new User();
 
+        try {
+            validateFormatEmail(value.email());
+            user = userRepository.findByEmail(value.email()).orElseThrow(
+                    () -> new InvalidUserDataException("Usuario não encontrado!!!!"));
+        } catch (InvalidUserDataException e) {
+            errorsSingleton.add(e.getMessage());
+        }
+
+        try {
+            if (value.password() == null) {
+                throw new InvalidUserDataException("Informe a senha!");
+            }
+            if (!passwordEncoder.matches(user.getPassword(), value.password())) {
+                throw new InvalidUserDataException("Email ou senha invalidos");
+            }
+
+        } catch (InvalidUserDataException e) {
+            errorsSingleton.add(e.getMessage());
+        }
+        if (errorsSingleton.isEmpty()) {
+            return;
+        }
+
+        StringBuilder errorMessage = new StringBuilder(errorsSingleton.size());
+        for (String msg : errorsSingleton) {
+            errorMessage.append(msg).append(", ");
+        }
+
+        if (!errorMessage.isEmpty()) {
+            errorsSingleton.clear(); // limpa o array
+            throw new InvalidUserDataException(errorMessage.toString()); // lança um exceção dos os erros
+        }
     }
 
     @Override

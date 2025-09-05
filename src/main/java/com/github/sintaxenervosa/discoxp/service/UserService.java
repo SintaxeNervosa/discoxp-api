@@ -8,8 +8,12 @@ import com.github.sintaxenervosa.discoxp.model.Group;
 import com.github.sintaxenervosa.discoxp.model.User;
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
 import com.github.sintaxenervosa.discoxp.validations.UserValidator;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.github.sintaxenervosa.discoxp.dto.LoginRequestDto;
+import com.github.sintaxenervosa.discoxp.dto.LoginResponseDto;
 
 
 @Service
@@ -32,6 +36,13 @@ public class UserService {
 
         user.setPassword(encodedPassword);
         userRepository.save(user);
+    }
+
+    public LoginResponseDto loginUser(LoginRequestDto request){
+        userValidator.validateLogin(request);
+
+        User user = userRepository.findByEmail(request.email()).get();
+        return LoginResponseDto.fromEntity(user);
     }
 
     public void updateUser(UpdateUserRequestDTO request) {

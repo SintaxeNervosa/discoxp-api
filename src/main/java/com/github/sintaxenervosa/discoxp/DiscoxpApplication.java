@@ -1,12 +1,13 @@
 package com.github.sintaxenervosa.discoxp;
 
-import com.github.sintaxenervosa.discoxp.security.DotenvInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
+import com.github.sintaxenervosa.discoxp.security.DotenvInitializer;
 @SpringBootApplication
 @EnableCaching
 @EnableScheduling
@@ -20,3 +21,4 @@ public class DiscoxpApplication {
 		logger.info("\nAPI rodando na porta 8080");
 	}
 }
+
