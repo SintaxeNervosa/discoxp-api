@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.sintaxenervosa.discoxp.dto.LoginRequestDto;
 import com.github.sintaxenervosa.discoxp.model.User;
 import com.github.sintaxenervosa.discoxp.service.UserService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/users")
 public class UserController {
     private UserService userService;
