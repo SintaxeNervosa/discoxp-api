@@ -6,22 +6,34 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.github.sintaxenervosa.discoxp.dto.LoginRequestDto;
+import com.github.sintaxenervosa.discoxp.dto.LoginResponseDto;
 import com.github.sintaxenervosa.discoxp.model.User;
-import com.github.sintaxenervosa.discoxp.repository.StockistRepository;
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
+import com.github.sintaxenervosa.discoxp.validations.LoginValidator;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-@AllArgsConstructor
+import lombok.RequiredArgsConstructor;
+@RequiredArgsConstructor
 @Service
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final LoginValidator loginValidator;
 
-    private StockistRepository stockistRepository;
+    public Optional<LoginResponseDto> login(LoginRequestDto loginRequest) throws IllegalAccessException{
+        Optional<User> user = userRepository.findByEmail(loginRequest.email());
 
-    public Optional<User> login(LoginRequestDto loginRequest){
-        System.out.println("Vamos lá logando...");
-        return null;
+        if (user.isEmpty()) {
+            return Optional.empty();
+        }
+
+        User usuario = user.get();
+
+        //      if (!passwordEncoder.matches(loginRequest.password(), usuario.getPassword())) {
+        //     return Optional.empty(); Depois uso o passwordEncoder
+        // }
+
+        loginValidator.validate(usuario);
+
+       return Optional.of(LoginResponseDto.fromEntity(usuario)); 
     }
 
     //Listar todos os usuários
