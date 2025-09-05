@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.InvalidUrlException;
 
 import com.github.sintaxenervosa.discoxp.dto.LoginRequestDto;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
@@ -14,8 +13,6 @@ import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException
 import com.github.sintaxenervosa.discoxp.model.Group;
 import com.github.sintaxenervosa.discoxp.model.User;
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
-
-import lombok.RequiredArgsConstructor;
 
 @Component
 public class UserValidator
@@ -155,7 +152,7 @@ public class UserValidator
         try {
             validateFormatEmail(value.email());
             user = userRepository.findByEmail(value.email()).orElseThrow(
-                    () -> new InvalidUserDataException("Usuario não encontrado!!!!"));
+                    () -> new InvalidUserDataException("Email e/ou senha invalidos"));
         } catch (InvalidUserDataException e) {
             errorsSingleton.add(e.getMessage());
         }
@@ -164,8 +161,8 @@ public class UserValidator
             if (value.password() == null) {
                 throw new InvalidUserDataException("Informe a senha!");
             }
-            if (!passwordEncoder.matches(user.getPassword(), value.password())) {
-                throw new InvalidUserDataException("Email ou senha invalidos");
+            if (!passwordEncoder.matches(value.password(), user.getPassword())) {
+                throw new InvalidUserDataException("Email e/ou senha invalidos");
             }
 
         } catch (InvalidUserDataException e) {
