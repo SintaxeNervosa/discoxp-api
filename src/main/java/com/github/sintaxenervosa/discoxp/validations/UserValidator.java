@@ -59,6 +59,8 @@ public class UserValidator implements Validator, EmailValidator, PasswordValidat
             validateGroup(Group.valueOf(request.group()));
         } catch (InvalidUserDataException e) {
             errorsSingleton.add(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            errorsSingleton.add("Grupo invalido");
         }
 
         if(errorsSingleton.isEmpty()) {

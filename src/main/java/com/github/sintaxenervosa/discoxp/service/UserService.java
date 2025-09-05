@@ -29,6 +29,7 @@ public class UserService {
         userValidator.validateUserCreation(request);
         String encodedPassword = passwordEncoder.encode(request.password());
         User user = new User(request);
+
         user.setPassword(encodedPassword);
         userRepository.save(user);
     }
