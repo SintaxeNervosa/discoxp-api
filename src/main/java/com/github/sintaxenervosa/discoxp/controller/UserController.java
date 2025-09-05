@@ -2,7 +2,10 @@ package com.github.sintaxenervosa.discoxp.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.github.sintaxenervosa.discoxp.dto.LoginResponseDto;
+import com.github.sintaxenervosa.discoxp.dto.user.UserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,7 @@ import com.github.sintaxenervosa.discoxp.service.UserService;
 import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/users")
 public class UserController {
     private UserService userService;
@@ -26,7 +30,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto){
         try {
-            Optional<User> resp = userService.login(loginRequestDto);
+            Optional<LoginResponseDto> resp = userService.login(loginRequestDto);
 
             return resp
                 .map(user -> ResponseEntity.ok().body("Login realizado com sucesso!"))
@@ -39,8 +43,11 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> listar() {
-        return userService.findAllUsers();
+    public List<UserDto> listar() {
+        return userService.findAllUsers()
+                .stream()
+                .map(UserDto::new)
+                .toList();
     }
 
     @GetMapping("/{id}")
