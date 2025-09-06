@@ -125,6 +125,12 @@ public class UserValidator
             errorsSingleton.add(e.getMessage());
         }
 
+        try {
+            validatePassword(request.password());
+        } catch (InvalidUserDataException e) {
+            errorsSingleton.add(e.getMessage());
+        }
+
         StringBuilder errorMessage = new StringBuilder(errorsSingleton.size());
 
         for (String message : errorsSingleton) {
@@ -168,6 +174,11 @@ public class UserValidator
         } catch (InvalidUserDataException e) {
             errorsSingleton.add(e.getMessage());
         }
+
+        if(!user.isStatus()) {
+            errorsSingleton.add("Usuário desabilitado");
+        }
+
         if (errorsSingleton.isEmpty()) {
             return;
         }

@@ -4,6 +4,7 @@ import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +21,18 @@ public class AdminController {
             return ResponseEntity.status(201).body("User created");
     };
 
+    @PutMapping("/change-status/{id}")
+    public ResponseEntity<?> updateUserStatus(@PathVariable("id") String id) {
+        userService.changeStatus(id);
+        return ResponseEntity.status(201).body("User updated");
+    }
+
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody UpdateUserRequestDTO request) {
+        System.out.println(request);
         userService.updateUser(request);
+
         return ResponseEntity.status(201).body("Usuário alterado");
     };
+
 }

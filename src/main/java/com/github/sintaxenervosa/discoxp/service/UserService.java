@@ -83,13 +83,19 @@ public class UserService {
         // dados que não se alteram
         newUser.setId(savedUser.getId());
         newUser.setEmail(savedUser.getEmail());
-        newUser.setPassword(savedUser.getPassword());
 
         // dados que se alteram
+        newUser.setPassword(passwordEncoder.encode(request.password()));
         newUser.setName(request.name());
         newUser.setCpf(request.cpf());
         newUser.setGroupEnum(Group.valueOf(request.group()));
 
         userRepository.save(newUser);
+    }
+
+    public void changeStatus(String id) {
+        User user = userRepository.findById(Long.parseLong(id)).get();
+        user.setStatus(!user.isStatus());
+        userRepository.save(user);
     }
 }
