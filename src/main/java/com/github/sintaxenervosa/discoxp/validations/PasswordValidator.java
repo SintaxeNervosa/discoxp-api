@@ -5,6 +5,11 @@ import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException
 public interface PasswordValidator {
 
     default void validatePassword(String password) {
+        if(password.isEmpty()) {
+            UserValidator.addErroMessageInList("Informe a senha");
+            return;
+        }
+
         StringBuilder errors = new  StringBuilder(5);
 
         if(password.length() < 8) {
@@ -42,7 +47,7 @@ public interface PasswordValidator {
         }
 
         if(!errors.isEmpty()){
-            throw new InvalidUserDataException(errors.toString());
+            UserValidator.addErroMessageInList(errors.toString());
         }
     }
 }

@@ -63,7 +63,7 @@ public class UserValidator
         }
 
         try {
-            validateGroup(Group.valueOf(request.group()));
+//            validateGroup(Group.valueOf(request.group()));
         } catch (InvalidUserDataException e) {
             errorsSingleton.add(e.getMessage());
         } catch (IllegalArgumentException e) {
@@ -85,65 +85,88 @@ public class UserValidator
 
     @Override
     public void validateUserUpdate(User savedUser, UpdateUserRequestDTO request) {
-        getErrorsSingleton(); // criar (se necessário) uma única instância da lista
+        getErrorsSingleton(); // cria (se necessário) uma única instância da lista
 
-        try {
-            // validação de nome caso diferentes
-            if (!savedUser.getName().equals(request.name())) {
-                validateName(request.name());
-            }
-            ;
-        } catch (InvalidUserDataException e) {
-            errorsSingleton.add(e.getMessage()); // adiciona o erro a lista de erros
-        }
-        ;
+        // se os nomes são diferentes
+        if (!savedUser.getName().equals(request.name())) {
+            validateName(request.name()); // valida o nome
+        };
 
-        try {
-            Group group = Group.valueOf(request.group());
-            if (!savedUser.getGroupEnum().equals(group)) {
-                validateGroup(group);
-            }
-            ;
-        } catch (InvalidUserDataException e) {
-            errorsSingleton.add(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            errorsSingleton.add("Grupo inválido");
-        }
-        ;
+        validateGroup(request.group());
 
-        try {
-            if (!savedUser.getCpf().equals(request.cpf())) {
-                validateFormatCpf(request.cpf()); // valida o formato do cpf
+        // se o cpf for diferente
+        if (!savedUser.getCpf().equals(request.cpf())) {
+            validateFormatCpf(request.cpf()); // valida o formato do cpf
 
-                if (validateExistsByCpf(request.cpf())) {
-                    throw new InvalidUserDataException("CPF inválido"); // valida se existe em outro usuário
-                }
-                ;
-            }
-            ;
-        } catch (InvalidUserDataException e) {
-            errorsSingleton.add(e.getMessage());
-        }
+            // verifica se existe se já
+            if (validateExistsByCpf(request.cpf())) {
+                errorsSingleton.add("CPF inválido"); // valida se existe em outro usuário
+            };
+        };
 
-        try {
-            validatePassword(request.password());
-        } catch (InvalidUserDataException e) {
-            errorsSingleton.add(e.getMessage());
-        }
+        // validação de senha
+        validatePassword(request.password());
 
-        StringBuilder errorMessage = new StringBuilder(errorsSingleton.size());
+        if(!errorsSingleton.isEmpty()) { return; }
 
-        for (String message : errorsSingleton) {
-            errorMessage.append(message).append(", ");
-        }
+        String errorMessage = getErrorMessage();
 
-        // verifica se há erros
-        if (!errorMessage.isEmpty()) {
-            errorsSingleton.clear(); // limpa o array
-            throw new InvalidUserDataException(errorMessage.toString()); // lança um exceção dos os erros
-        }
-
+        throw new InvalidUserDataException(errorMessage);
     }
+
+
+//    @Override
+//    public void validateUserUpdate(User savedUser, UpdateUserRequestDTO request) {
+//        getErrorsSingleton(); // criar (se necessário) uma única instância da lista
+//
+//        try {
+//            // validação de nome caso diferentes
+//            if (!savedUser.getName().equals(request.name())) {
+//                validateName(request.name());
+//            }
+//            ;
+//        } catch (InvalidUserDataException e) {
+//            errorsSingleton.add(e.getMessage()); // adiciona o erro a lista de erros
+//        }
+//        ;
+//
+//        try {
+//            Group group = Group.valueOf(request.group());
+//            if (!savedUser.getGroupEnum().equals(group)) {
+//                validateGroup(group);
+//            }
+//            ;
+//        } catch (InvalidUserDataException e) {
+//            errorsSingleton.add(e.getMessage());
+//        } catch (IllegalArgumentException e) {
+//            errorsSingleton.add("Grupo inválido");
+//        }
+//        ;
+//
+//        try {
+//            if (!savedUser.getCpf().equals(request.cpf())) {
+//                validateFormatCpf(request.cpf()); // valida o formato do cpf
+//
+//                if (validateExistsByCpf(request.cpf())) {
+//                    throw new InvalidUserDataException("CPF inválido"); // valida se existe em outro usuário
+//                }
+//                ;
+//            }
+//            ;
+//        } catch (InvalidUserDataException e) {
+//            errorsSingleton.add(e.getMessage());
+//        }
+//
+//        try {
+//            validatePassword(request.password());
+//        } catch (InvalidUserDataException e) {
+//            errorsSingleton.add(e.getMessage());
+//        }
+//
+//
+
+//
+//    }
 
     @Override
     public void validateUserSearchById(String id) {
@@ -183,15 +206,9 @@ public class UserValidator
             return;
         }
 
-        StringBuilder errorMessage = new StringBuilder(errorsSingleton.size());
-        for (String msg : errorsSingleton) {
-            errorMessage.append(msg).append(", ");
-        }
+        String errorMessage = getErrorMessage();
 
-        if (!errorMessage.isEmpty()) {
-            errorsSingleton.clear(); // limpa o array
-            throw new InvalidUserDataException(errorMessage.toString()); // lança um exceção dos os erros
-        }
+        throw new InvalidUserDataException(errorMessage); // lança um exceção dos os erros
     }
 
     @Override
@@ -199,9 +216,31 @@ public class UserValidator
         return userRepository;
     }
 
+    // adiciona a mensagem de erro na lista
+    public static void addErroMessageInList(String message) {
+        getErrorsSingleton();
+
+        errorsSingleton.add(message);
+    };
+
     private static void getErrorsSingleton() {
         if (errorsSingleton == null) {
             errorsSingleton = new ArrayList<>();
         }
     }
+
+
+    private static String getErrorMessage() {
+        getErrorsSingleton();
+
+        StringBuilder errorMessage = new StringBuilder(errorsSingleton.size());
+
+        for (String m : errorsSingleton) {
+            errorMessage.append(m).append(", ");
+        };
+
+        errorsSingleton.clear();
+        return errorMessage.toString();
+    }
+
 }
