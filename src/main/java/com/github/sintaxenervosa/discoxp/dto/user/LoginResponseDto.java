@@ -1,4 +1,4 @@
-package com.github.sintaxenervosa.discoxp.dto;
+package com.github.sintaxenervosa.discoxp.dto.user;
 
 import com.github.sintaxenervosa.discoxp.model.Group;
 import com.github.sintaxenervosa.discoxp.model.User;

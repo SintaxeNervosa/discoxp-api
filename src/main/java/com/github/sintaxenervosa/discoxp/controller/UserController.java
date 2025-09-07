@@ -5,8 +5,8 @@ import com.github.sintaxenervosa.discoxp.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.github.sintaxenervosa.discoxp.dto.LoginRequestDto;
-import com.github.sintaxenervosa.discoxp.dto.LoginResponseDto;
+import com.github.sintaxenervosa.discoxp.dto.user.LoginRequestDto;
+import com.github.sintaxenervosa.discoxp.dto.user.LoginResponseDto;
 import com.github.sintaxenervosa.discoxp.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}") // Retornar DTO
-    public ResponseEntity<User> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<User> buscarPorId(@PathVariable String id) {
         return userService.findUserById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

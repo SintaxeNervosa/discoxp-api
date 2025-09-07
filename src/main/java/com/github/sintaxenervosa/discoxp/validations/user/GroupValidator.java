@@ -1,11 +1,12 @@
-package com.github.sintaxenervosa.discoxp.validations;
+package com.github.sintaxenervosa.discoxp.validations.user;
 
 import com.github.sintaxenervosa.discoxp.model.Group;
+import com.github.sintaxenervosa.discoxp.validations.ValidationErrorRegistry;
 
 public interface GroupValidator {
     default void validateGroup(String group) {
         if(group == null) {
-            UserValidator.addErroMessageInList("Informe o grupo");
+            ValidationErrorRegistry.addError("Informe o grupo");
             return;
         }
 
@@ -14,7 +15,7 @@ public interface GroupValidator {
         try {
             stringToGroup = Group.valueOf(group);
         } catch (IllegalArgumentException e) {
-            UserValidator.addErroMessageInList("Grupo inválido");
+            ValidationErrorRegistry.addError("Grupo inválido");
             return;
         }
 
@@ -26,6 +27,6 @@ public interface GroupValidator {
             }
         }
 
-        if(!exists) { UserValidator.addErroMessageInList("Grupo Inexistente"); }
+        if(!exists) { ValidationErrorRegistry.addError("Grupo Inexistente"); }
     }
 }

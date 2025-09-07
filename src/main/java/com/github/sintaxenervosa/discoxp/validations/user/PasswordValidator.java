@@ -1,12 +1,12 @@
-package com.github.sintaxenervosa.discoxp.validations;
+package com.github.sintaxenervosa.discoxp.validations.user;
 
-import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
+import com.github.sintaxenervosa.discoxp.validations.ValidationErrorRegistry;
 
 public interface PasswordValidator {
 
     default void validatePassword(String password) {
         if(password.isEmpty()) {
-            UserValidator.addErroMessageInList("Informe a senha");
+            ValidationErrorRegistry.addError("Informe a senha");
             return;
         }
 
@@ -47,7 +47,7 @@ public interface PasswordValidator {
         }
 
         if(!errors.isEmpty()){
-            UserValidator.addErroMessageInList(errors.toString());
+            ValidationErrorRegistry.addError(errors.toString());
         }
     }
 }

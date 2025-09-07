@@ -1,22 +1,26 @@
-package com.github.sintaxenervosa.discoxp.validations;
+package com.github.sintaxenervosa.discoxp.validations.user;
 
-import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
+import com.github.sintaxenervosa.discoxp.validations.ValidationErrorRegistry;
 
 public interface EmailValidator {
 
     UserRepository userRepository(); // para quem implementar, é necessario fornecer
 
     // Valida o formato do e-mail
-    default void validateFormatEmail(String email) { // implementacao
+    default boolean validateFormatEmail(String email) { // implementacao
        if(email == null || email.isBlank()){
-           throw new InvalidUserDataException("E-mai não pode ser vazio");
-       }
+           ValidationErrorRegistry.addError("E-mail não pode ser vazio");
+           return false;
+       };
 
        String emailRegex = "^[\\w-\\.']+@([\\w-]+\\.)+[\\w-]{2,4}$";
        if(!email.matches(emailRegex)){
-           throw new InvalidUserDataException("Formato de e-mail inválido");
-       }
+           ValidationErrorRegistry.addError("Formato de e-mail inválido");
+           return false;
+       };
+
+       return true;
     }
 
     default boolean validateExistsByEmail(String email) {

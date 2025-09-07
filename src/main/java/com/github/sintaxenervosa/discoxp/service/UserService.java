@@ -7,13 +7,13 @@ import com.github.sintaxenervosa.discoxp.exception.user.UserNotFoundExeption;
 import com.github.sintaxenervosa.discoxp.model.Group;
 import com.github.sintaxenervosa.discoxp.model.User;
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
-import com.github.sintaxenervosa.discoxp.validations.UserValidator;
 
+import com.github.sintaxenervosa.discoxp.validations.user.DefaultUserValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.github.sintaxenervosa.discoxp.dto.LoginRequestDto;
-import com.github.sintaxenervosa.discoxp.dto.LoginResponseDto;
+import com.github.sintaxenervosa.discoxp.dto.user.LoginRequestDto;
+import com.github.sintaxenervosa.discoxp.dto.user.LoginResponseDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,13 +23,15 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserValidator userValidator;
+    private final DefaultUserValidator userValidator;
     private final PasswordEncoder  passwordEncoder;
+    private final DefaultUserValidator defaultUserValidator;
 
-    public UserService(UserValidator userValidator, UserRepository userRepository, PasswordEncoder passwordEncoder){
+    public UserService(DefaultUserValidator userValidator, UserRepository userRepository, PasswordEncoder passwordEncoder, DefaultUserValidator defaultUserValidator){
         this.userValidator = userValidator;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.defaultUserValidator = defaultUserValidator;
     }
 
     public void createUser(CreateUserRequestDTO request) {
@@ -55,11 +57,10 @@ public class UserService {
     }
 
     //buscar por id
-    public Optional<User> findUserById(Long id) {
-        return userRepository.findById(id);
+    public Optional<User> findUserById(String id) {
+        defaultUserValidator.validateUserSearchById(id); // valida o id informado
+        return userRepository.findById(Long.parseLong(id));
     }
-
-
 
     public void updateUser(UpdateUserRequestDTO request) {
         if(request.id() == null || request.id().isEmpty()) {
