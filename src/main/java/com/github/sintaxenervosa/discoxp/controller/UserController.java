@@ -25,7 +25,7 @@ public class UserController {
             .body(login);
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/users/{id}") // Retornar DTO
     public ResponseEntity<User> buscarPorId(@PathVariable Long id) {
         return userService.findUserById(id)
                 .map(ResponseEntity::ok)

@@ -10,7 +10,6 @@ import com.github.sintaxenervosa.discoxp.dto.LoginRequestDto;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
-import com.github.sintaxenervosa.discoxp.model.Group;
 import com.github.sintaxenervosa.discoxp.model.User;
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
 
@@ -107,7 +106,7 @@ public class UserValidator
         // validação de senha
         validatePassword(request.password());
 
-        if(!errorsSingleton.isEmpty()) { return; }
+        if(errorsSingleton.isEmpty()) { return; }
 
         String errorMessage = getErrorMessage();
 
@@ -170,6 +169,12 @@ public class UserValidator
 
     @Override
     public void validateUserSearchById(String id) {
+        Long stringToLong;
+        try {
+            stringToLong = Long.parseLong(id);
+        } catch (NumberFormatException e) {
+
+        }
 
     }
 
