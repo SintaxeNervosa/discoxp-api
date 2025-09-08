@@ -2,11 +2,10 @@ package com.github.sintaxenervosa.discoxp.model;
 
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tb_user")
