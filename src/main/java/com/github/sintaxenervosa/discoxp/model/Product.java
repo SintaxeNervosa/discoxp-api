@@ -43,8 +43,8 @@ public class Product {
     private List<ImageProduct> images = new ArrayList<>();
 
     //Em tese esse método iara auxiliar a adicionar as images
-    public void addImage(ImageProduct image){
-        images.add(image);
-        image.setProduct(this);
-    }
+//    public void addImage(ImageProduct image){
+//        images.add(image);
+//        image.setProduct(this);
+//    }
 }

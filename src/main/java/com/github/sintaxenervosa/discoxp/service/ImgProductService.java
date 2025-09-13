@@ -11,30 +11,42 @@ import com.github.sintaxenervosa.discoxp.model.Product;
 import com.github.sintaxenervosa.discoxp.repository.ImgProductRepository;
 import com.github.sintaxenervosa.discoxp.repository.ProductRepository;
 
+import javax.imageio.IIOException;
+
 @Service
 public class ImgProductService {
     private ImgProductRepository imgProductRepository;
     private ProductRepository productRepository;
 
-    public void addImages(Long productId, List<MultipartFile> images) throws IOException{
+    public ImgProductService(ImgProductRepository imgProductRepository, ProductRepository productRepository) {
+        this.imgProductRepository = imgProductRepository;
+        this.productRepository = productRepository;
+    }
+
+    public void addImages(Long productId, List<MultipartFile> images){
         Product produto = productRepository.findById(productId)
             .orElseThrow(() -> new RuntimeException("Produto Não encontrado ou não existe"));
 
         for(MultipartFile image : images){
-            if (image.isEmpty()) {
-                continue; // vai pular files vazios
-            }
+//            if (image.isEmpty()) {
+//                continue; // vai pular files vazios
+//            }
 
             //validar nome unico da imagem 
 
             //comprimir imagem
 
             ImageProduct imageProduct = new ImageProduct();
-            imageProduct.setImageData(image.getBytes());
+            try {
+                imageProduct.setImageData(image.getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException("Error encontrando image");
+            }
+
             imageProduct.setName(image.getOriginalFilename());
             imageProduct.setProduct(produto);
 
-            produto.addImage(imageProduct);
+            System.out.println(image.getOriginalFilename());
 
             imgProductRepository.save(imageProduct);
         }

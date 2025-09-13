@@ -24,19 +24,9 @@ public class ImgController {
 
     // ""
     @PostMapping("/images/{productId}")
-    public ResponseEntity<String> uparImages(
-            @PathVariable Long productId,
-            HttpServletRequest request,
-            @RequestParam(value = "images", required = false) List<MultipartFile> images) {
-        System.out.println("\nTipo: " + request.getContentType());
-
-        if (images == null) {
-            return ResponseEntity.badRequest().body("Nada");
-        }
-        System.out.println("images: " + images.size());
+    public ResponseEntity<String> uparImages(@PathVariable Long productId, @RequestParam("file") List<MultipartFile> files){
         try {
-
-            imgProductService.addImages(productId, images);
+            imgProductService.addImages(productId, files);
             return ResponseEntity.ok("Imagens adicionadas com sucesso");
 
         } catch (Exception e) {
