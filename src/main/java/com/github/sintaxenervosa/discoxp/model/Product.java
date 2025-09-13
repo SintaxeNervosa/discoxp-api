@@ -21,7 +21,7 @@ public class Product {
     @Column(nullable = false, length = 200)
     private String name;
 
-    private double evaluation = 0;
+    private double evaluation;
 
     @Column(nullable = false, length = 2000)
     private String description;

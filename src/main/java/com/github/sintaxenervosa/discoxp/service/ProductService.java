@@ -22,8 +22,9 @@ public class ProductService {
 
     public void createProduct(CreateProductRequestDTO request) {
         productValidator.validateProductCreation(request);
-        Product product = new Product();
+        Product product = request.toEntity();
         productRepository.save(product);
+
     }
 
 }
