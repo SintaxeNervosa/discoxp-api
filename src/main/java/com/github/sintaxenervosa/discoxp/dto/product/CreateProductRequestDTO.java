@@ -4,7 +4,7 @@ import com.github.sintaxenervosa.discoxp.model.Product;
 
 import java.math.BigDecimal;
 
-public record CreateProductRequestDTO(String name, double evaluation, String description, BigDecimal price, int quantity) {
+public record CreateProductRequestDTO(String name, double evaluation, String description, BigDecimal price, Integer quantity) {
 
     public Product toEntity() {
         Product product = new Product();
