@@ -2,7 +2,9 @@ package com.github.sintaxenervosa.discoxp.validations.product;
 
 import com.github.sintaxenervosa.discoxp.dto.product.CreateProductRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductRequestDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DefaultProductValidator implements ProductValidator {
 
     @Override
