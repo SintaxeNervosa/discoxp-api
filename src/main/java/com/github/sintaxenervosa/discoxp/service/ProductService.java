@@ -10,19 +10,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductService {
 
-    private ProductRepository productRepository;
-    private ProductValidator productValidator;
-    private DefaultProductValidator defaultProductValidator;
+    private final ProductRepository productRepository;
+    private final ProductValidator productValidator;
+    //private DefaultProductValidator defaultProductValidator;
 
-    public ProductService(ProductRepository productRepository,ProductValidator productValidator, DefaultProductValidator defaultProductValidator) {
+    public ProductService(ProductRepository productRepository,ProductValidator productValidator) {
         this.productRepository = productRepository;
         this.productValidator = productValidator;
-        this.defaultProductValidator = defaultProductValidator;
+        //this.defaultProductValidator = defaultProductValidator;
     }
 
     public void createProduct(CreateProductRequestDTO request) {
         productValidator.validateProductCreation(request);
+
         Product product = new Product();
+        product.setName(request.name());
+        product.setDescription(request.description());
+        product.setPrice(request.price());
+        product.setQuantity(request.quantity());// não deu certo
+
         productRepository.save(product);
     }
 

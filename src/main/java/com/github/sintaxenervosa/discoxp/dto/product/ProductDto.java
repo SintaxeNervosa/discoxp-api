@@ -8,9 +8,9 @@ public class ProductDto {
     private String name;
     private String description;
     private BigDecimal price;
-    private int quantity;
+    private Integer quantity;
 
-    public ProductDto(Long id, String name, String description, BigDecimal price, int quantity) {
+    public ProductDto(Long id, String name, String description, BigDecimal price, Integer quantity) {
         this.id = id;
         this.name = name;
         this.description = description;

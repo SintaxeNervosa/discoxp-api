@@ -21,7 +21,7 @@ public class Product {
     @Column(nullable = false, length = 200)
     private String name;
 
-    private double evaluation = 0;
+    private double evaluation;
 
     @Column(nullable = false, length = 2000)
     private String description;
@@ -29,8 +29,8 @@ public class Product {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Column(nullable = false)
-    private int quantity;
+    @Column(name="quantity",nullable = false)
+    private Integer quantity;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();

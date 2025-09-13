@@ -16,8 +16,12 @@ public class ProductController {
 
     @PostMapping("/createProduct")
     public ResponseEntity<?> createProduct(@RequestBody CreateProductRequestDTO request){
+        try {
         productService.createProduct(request);
-        return ResponseEntity.status(201).body("Produto criado!");
+        return ResponseEntity.status(201).body("\n!-------------------------Produto criado!-------------------------\n");
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage(), e.getCause());
+        }
     }
 
 
