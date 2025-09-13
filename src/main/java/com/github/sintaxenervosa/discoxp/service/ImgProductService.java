@@ -50,8 +50,9 @@ public class ImgProductService {
 
             imgProductRepository.save(imageProduct);
         }
-        
     }
 
-
+    public List<ImageProduct> allImagesByIdProduct(Long productId){
+        return imgProductRepository.findByProduct_Id(productId);
+    }
 }
