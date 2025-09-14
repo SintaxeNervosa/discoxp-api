@@ -4,7 +4,7 @@ import com.github.sintaxenervosa.discoxp.validations.ValidationErrorRegistry;
 
 public interface NameValidator {
 
-    default void validate(String name) {
+    default void validateNameProduct(String name) {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("O nome não pode ser vazio.");
         }
