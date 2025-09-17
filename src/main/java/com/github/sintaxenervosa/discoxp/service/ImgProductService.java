@@ -57,7 +57,7 @@ public class ImgProductService {
 
             System.out.println(image.getOriginalFilename());
               // validar nome unico da imagem
-            String newUniqueName = imgProductValidator.valideteInsertImg(image);
+            String newUniqueName = imgProductValidator.validateInsertImg(image);
 
             imageProduct.setName(newUniqueName);
             imageProduct.setProduct(produto);

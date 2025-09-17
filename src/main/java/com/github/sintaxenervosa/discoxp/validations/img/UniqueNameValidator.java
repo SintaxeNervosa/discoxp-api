@@ -16,5 +16,4 @@ public interface UniqueNameValidator {
         return "img_" + request.getOriginalFilename() +  "_" + uuid + "_" + timestamp ;
     }
 
-    String ImgProductValidator(MultipartFile request);
 }
