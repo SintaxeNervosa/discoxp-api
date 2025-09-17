@@ -3,6 +3,7 @@ package com.github.sintaxenervosa.discoxp.controller;
 import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
+import com.github.sintaxenervosa.discoxp.model.Product;
 import com.github.sintaxenervosa.discoxp.service.ProductService;
 import com.github.sintaxenervosa.discoxp.service.UserService;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,21 @@ public class AdminController {
         productService.updateProduct(product);
         return ResponseEntity.status(204).body(HttpStatus.NO_CONTENT);
     };
+
+    @GetMapping("/product/{id}")
+    public ResponseEntity<?> findProductById(@PathVariable("id") Long id) {
+        Product product = productService.findProductById(id).get();
+
+        Product newProduct = new Product();
+        newProduct.setId(product.getId());
+        newProduct.setName(product.getName());
+        newProduct.setDescription(product.getDescription());
+        newProduct.setPrice(product.getPrice());
+        newProduct.setQuantity(product.getQuantity());
+        newProduct.setEvaluation(product.getEvaluation());
+
+        return ResponseEntity.status(200).body(newProduct);
+    }
 
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody CreateUserRequestDTO request) {

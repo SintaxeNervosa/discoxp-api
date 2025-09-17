@@ -15,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.context.annotation.Lazy;
 
 @Getter
 @Setter
@@ -40,6 +41,7 @@ public class Product {
     @Column(name="quantity",nullable = false)
     private Integer quantity;
 
+    // @Lazy
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImageProduct> images = new ArrayList<>();
 
@@ -59,4 +61,18 @@ public class Product {
 //        images.add(image);
 //        image.setProduct(this);
 //    }
+
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", evaluation=" + evaluation +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", images=" + images +
+                '}';
+    }
 }

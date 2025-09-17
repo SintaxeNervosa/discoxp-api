@@ -9,6 +9,8 @@ import com.github.sintaxenervosa.discoxp.validations.product.DefaultProductValid
 import com.github.sintaxenervosa.discoxp.validations.product.ProductValidator;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ProductService {
 
@@ -38,4 +40,8 @@ public class ProductService {
         productRepository.save(newProduct);
     }
 
+    // temporário
+    public Optional<Product> findProductById(Long id) {
+        return productRepository.findById(id);
+    }
 }
