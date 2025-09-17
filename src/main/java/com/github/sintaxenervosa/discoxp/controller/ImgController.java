@@ -34,7 +34,8 @@ public class ImgController {
             return ResponseEntity.ok("Imagens adicionadas com sucesso");
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro em salvar imagens");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro em salvar imagens: " + e.getMessage());
         }
     }
 
