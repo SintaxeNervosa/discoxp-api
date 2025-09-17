@@ -1,10 +1,14 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
+import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
+import com.github.sintaxenervosa.discoxp.service.ProductService;
 import com.github.sintaxenervosa.discoxp.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,12 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     private final UserService userService;
-
-    @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody CreateUserRequestDTO request) {
-            userService.createUser(request);
-            return ResponseEntity.status(201).body("User created");
-    };
+    private final ProductService productService;
 
     @PutMapping("/change-status/{id}")
     public ResponseEntity<?> updateUserStatus(@PathVariable("id") String id) {
@@ -27,12 +26,23 @@ public class AdminController {
         return ResponseEntity.status(201).body("User updated");
     }
 
+    @PutMapping("/product")
+    public HttpEntity<HttpStatusCode> updateProduct(@RequestBody UpdateProductRequestDTO product) {
+        productService.updateProduct(product);
+        return ResponseEntity.status(204).body(HttpStatus.NO_CONTENT);
+    };
+
+    @PostMapping
+    public ResponseEntity<?> createUser(@RequestBody CreateUserRequestDTO request) {
+        userService.createUser(request);
+        return ResponseEntity.status(201).body("User created");
+    };
+
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody UpdateUserRequestDTO request) {
         System.out.println(request);
         userService.updateUser(request);
 
-        return ResponseEntity.status(201).body("Usuário alterado");
+        return ResponseEntity.status(204).body(HttpStatus.NO_CONTENT);
     };
-
 }

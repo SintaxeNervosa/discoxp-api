@@ -1,20 +1,23 @@
 package com.github.sintaxenervosa.discoxp.validations.product;
 
+import com.github.sintaxenervosa.discoxp.validations.ValidationErrorRegistry;
+
 import java.math.BigDecimal;
 
 public interface PriceValidation {
     default void validatePriceProduct(BigDecimal price) {
         if (price == null) {
-            throw new IllegalArgumentException("O preço não pode ser vazio.");
+            ValidationErrorRegistry.addError("O preço não pode ser vazio.");
+            return;
         }
 
         if (price.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("O preço não pode ser negativo.");
+            ValidationErrorRegistry.addError("O preço não pode ser negativo.");
+            return;
         }
 
         if (price.scale() > 2) {
-            throw new IllegalArgumentException("O preço deve ter no máximo 2 casas decimais.");
+            ValidationErrorRegistry.addError("O preço deve ter no máximo 2 casas decimais.");
         }
     }
-
 }

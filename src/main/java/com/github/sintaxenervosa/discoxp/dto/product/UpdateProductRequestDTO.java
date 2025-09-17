@@ -1,4 +1,6 @@
 package com.github.sintaxenervosa.discoxp.dto.product;
 
-public record UpdateProductRequestDTO() {
+import java.math.BigDecimal;
+
+public record UpdateProductRequestDTO(String id, String name, double evaluation, String description, BigDecimal price, Integer quantity) {
 }

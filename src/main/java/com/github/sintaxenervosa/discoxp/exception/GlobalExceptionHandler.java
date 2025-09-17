@@ -1,5 +1,6 @@
 package com.github.sintaxenervosa.discoxp.exception;
 
+import com.github.sintaxenervosa.discoxp.exception.product.InvalidProductDataException;
 import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,6 +20,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidUserDataException.class)
     public ResponseEntity<ErrorResponse> handleInvalidUserDataException(InvalidUserDataException error) {
+        ErrorResponse errorResponse = new ErrorResponse(error.getMessage());
+        return ResponseEntity.status(400).body(errorResponse);
+    }
+
+    @ExceptionHandler(InvalidProductDataException.class)
+    ResponseEntity<ErrorResponse> handleInvalidProductDataException(InvalidProductDataException error) {
         ErrorResponse errorResponse = new ErrorResponse(error.getMessage());
         return ResponseEntity.status(400).body(errorResponse);
     }

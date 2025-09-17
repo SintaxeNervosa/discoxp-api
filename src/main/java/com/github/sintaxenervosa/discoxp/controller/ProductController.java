@@ -1,13 +1,12 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
 import com.github.sintaxenervosa.discoxp.dto.product.CreateProductRequestDTO;
+import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductRequestDTO;
+import com.github.sintaxenervosa.discoxp.model.Product;
 import com.github.sintaxenervosa.discoxp.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +22,4 @@ public class ProductController {
             throw new IllegalArgumentException(e.getMessage(), e.getCause());
         }
     }
-
-
 }
