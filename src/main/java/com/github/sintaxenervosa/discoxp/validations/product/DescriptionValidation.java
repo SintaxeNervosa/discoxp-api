@@ -2,7 +2,7 @@ package com.github.sintaxenervosa.discoxp.validations.product;
 
 public interface DescriptionValidation {
 
-    default void validate(String description) {
+    default void validateDescriptionProduct(String description) {
         if (description == null || description.trim().isEmpty()) {
             throw new IllegalArgumentException("A descrição não pode ser vazia.");
         }
