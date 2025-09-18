@@ -22,25 +22,25 @@ public class DefaultProductValidator implements ProductValidator, NameValidator,
     @Override
     public void validateProductCreation(CreateProductRequestDTO request) {
 
-        if (productRepository.existsByName(request.name())) {
-            throw new IllegalArgumentException("Já existe um produto com esse nome.");
+        if(validateNameProduct(request.name())){
+            if(validaExistsByName(request.name())) {
+                ValidationErrorRegistry.addError("Nome já existente.");
+            }
         }
 
-        validateNameProduct(request.name());
-        ValidationErrorRegistry.addError("Nome do produto inválido ou vazio.");
-
         validateDescriptionProduct(request.description());
-        ValidationErrorRegistry.addError("Descrição do produto inválida.");
 
         validateEvaluationProduct(request.evaluation());
-        ValidationErrorRegistry.addError("Avaliação fora do intervalo permitido.");
 
         validatePriceProduct(request.price());
-        ValidationErrorRegistry.addError("Preço do produto inválido.");
 
         validateQuantityProduct(request.quantity());
-        ValidationErrorRegistry.addError("Quantidade do produto deve ser maior que zero.");
 
+        if(!ValidationErrorRegistry.hasErrors()) {
+            return;
+        }
+        String errorMessage = ValidationErrorRegistry.getErrorMessage();
+        throw new InvalidProductDataException(errorMessage);
     }
 
     @Override

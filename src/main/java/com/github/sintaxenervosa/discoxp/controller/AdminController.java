@@ -1,5 +1,6 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
+import com.github.sintaxenervosa.discoxp.dto.product.CreateProductRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
@@ -61,4 +62,14 @@ public class AdminController {
 
         return ResponseEntity.status(204).body(HttpStatus.NO_CONTENT);
     };
+
+    @PostMapping("/createProduct")
+    public ResponseEntity<?> createProduct(@RequestBody CreateProductRequestDTO request){
+        try {
+            productService.createProduct(request);
+            return ResponseEntity.status(200).body("Produto criado!");
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage(), e.getCause());
+        }
+    }
 }
