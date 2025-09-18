@@ -48,8 +48,8 @@ public class ImgProductService {
             // comprimir imagem
 
             try {
-                byte[] comprimida = compressImage(image, 0.7f);
-                imageProduct.setImageData(comprimida);// image.getBytes()
+                // byte[] comprimida = compressImage(image, 0.7f);
+                imageProduct.setImageData(image.getBytes());//
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new RuntimeException("Error encontrando image");

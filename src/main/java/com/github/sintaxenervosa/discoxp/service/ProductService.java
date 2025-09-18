@@ -3,13 +3,14 @@ package com.github.sintaxenervosa.discoxp.service;
 import com.github.sintaxenervosa.discoxp.dto.product.CreateProductRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductRequestDTO;
 import com.github.sintaxenervosa.discoxp.model.Product;
-import com.github.sintaxenervosa.discoxp.model.User;
 import com.github.sintaxenervosa.discoxp.repository.ProductRepository;
 import com.github.sintaxenervosa.discoxp.validations.product.DefaultProductValidator;
 import com.github.sintaxenervosa.discoxp.validations.product.ProductValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.List;
+
 
 @Service
 public class ProductService {
@@ -44,4 +45,9 @@ public class ProductService {
     public Optional<Product> findProductById(Long id) {
         return productRepository.findById(id);
     }
+
+    public List<Product> listAllProducts(){
+        return productRepository.findAll();
+    }
+
 }
