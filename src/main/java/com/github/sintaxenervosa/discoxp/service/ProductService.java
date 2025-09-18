@@ -7,6 +7,8 @@ import com.github.sintaxenervosa.discoxp.validations.product.DefaultProductValid
 import com.github.sintaxenervosa.discoxp.validations.product.ProductValidator;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductService {
 
@@ -25,6 +27,10 @@ public class ProductService {
         Product product = request.toEntity();
         productRepository.save(product);
 
+    }
+
+    public List<Product> listAllProducts(){
+        return productRepository.findAll();
     }
 
 }
