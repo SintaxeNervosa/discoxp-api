@@ -11,7 +11,7 @@ public record ImgProductResponseDTO(
         return new ImgProductResponseDTO(
             imageProduct.getId().toString(),
             imageProduct.getName(),
-            "images" + imageProduct.getId()
+            "/images/" + imageProduct.getId()
         );
     }
 }

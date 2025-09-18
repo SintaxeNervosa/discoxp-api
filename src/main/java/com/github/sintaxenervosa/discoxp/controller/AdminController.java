@@ -1,6 +1,7 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
 import com.github.sintaxenervosa.discoxp.dto.product.CreateProductRequestDTO;
+import com.github.sintaxenervosa.discoxp.dto.product.ProductResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
@@ -36,17 +37,8 @@ public class AdminController {
 
     @GetMapping("/product/{id}")
     public ResponseEntity<?> findProductById(@PathVariable("id") Long id) {
-        Product product = productService.findProductById(id).get();
-
-        Product newProduct = new Product();
-        newProduct.setId(product.getId());
-        newProduct.setName(product.getName());
-        newProduct.setDescription(product.getDescription());
-        newProduct.setPrice(product.getPrice());
-        newProduct.setQuantity(product.getQuantity());
-        newProduct.setEvaluation(product.getEvaluation());
-
-        return ResponseEntity.status(200).body(newProduct);
+        ProductResponseDTO productResponseDTO  = productService.findProductById(id);
+        return ResponseEntity.status(200).body(productResponseDTO);
     }
 
     @PostMapping
