@@ -13,6 +13,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Arrays;
+
 @Getter
 @Setter
 @Table(name = "tb_product_image")
@@ -34,5 +36,4 @@ public class ImageProduct {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    
 }
