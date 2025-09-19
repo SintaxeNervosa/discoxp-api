@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -12,8 +13,10 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.github.sintaxenervosa.discoxp.exception.product.ProductNotFoundException;
 import com.github.sintaxenervosa.discoxp.model.ImageProduct;
 import com.github.sintaxenervosa.discoxp.model.Product;
 import com.github.sintaxenervosa.discoxp.repository.ImgProductRepository;
@@ -28,7 +31,8 @@ public class ImgProductService {
     private final DefaultProductImageValidator defaultImageValidator;
     private final ImgProductValidator imgProductValidator;
 
-    public ImgProductService(ImgProductRepository imgProductRepository, ProductRepository productRepository, DefaultProductImageValidator defaultImageValidator, ImgProductValidator imgProductValidator) {
+    public ImgProductService(ImgProductRepository imgProductRepository, ProductRepository productRepository,
+            DefaultProductImageValidator defaultImageValidator, ImgProductValidator imgProductValidator) {
         this.imgProductRepository = imgProductRepository;
         this.productRepository = productRepository;
         this.defaultImageValidator = defaultImageValidator;
@@ -56,7 +60,7 @@ public class ImgProductService {
             }
 
             System.out.println(image.getOriginalFilename());
-              // validar nome unico da imagem
+            // validar nome unico da imagem
             String newUniqueName = imgProductValidator.validateInsertImg(image);
 
             imageProduct.setName(newUniqueName);
@@ -72,7 +76,10 @@ public class ImgProductService {
         return imgProductRepository.findByProduct_Id(productId);
     }
 
-    private static byte[] compressImage(MultipartFile file, float compressQuality) throws IOException {
+    private static byte[] compressImage(MultipartFile file, float compressQuality) throws IOException { // tirar esse
+                                                                                                        // IOException e
+                                                                                                        // colocar no
+                                                                                                        // try cath
         BufferedImage iamge = ImageIO.read(file.getInputStream());
 
         ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
@@ -94,5 +101,17 @@ public class ImgProductService {
         return byteArraySaida.toByteArray();
     }
 
+    public void deleteProductImage(Long idProduct, Long idImageProduct) {
+        Optional<ImageProduct> imageExist = imgProductRepository.findById(idImageProduct);
 
+        if (!imageExist.isPresent()) {
+             throw new ProductNotFoundException("Imagem não encontrada!");
+        }
+        ImageProduct image = imageExist.get();
+                if (image.getProduct().getId().equals(idProduct)) {
+                    imgProductRepository.deleteById(idImageProduct);
+                } else {
+                    throw new RuntimeException("Essa imagem não pertence ao produto!");
+                }
+    }
 }
