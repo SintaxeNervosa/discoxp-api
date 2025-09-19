@@ -3,14 +3,19 @@ package com.github.sintaxenervosa.discoxp.service;
 import com.github.sintaxenervosa.discoxp.dto.product.CreateProductRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.product.ProductResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductRequestDTO;
+import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
+import com.github.sintaxenervosa.discoxp.exception.user.UserNotFoundExeption;
 import com.github.sintaxenervosa.discoxp.model.Product;
 import com.github.sintaxenervosa.discoxp.repository.ImgProductRepository;
 import com.github.sintaxenervosa.discoxp.repository.ProductRepository;
 import com.github.sintaxenervosa.discoxp.validations.product.DefaultProductValidator;
 import com.github.sintaxenervosa.discoxp.validations.product.ProductValidator;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+
 
 @Service
 public class ProductService {
@@ -46,16 +51,39 @@ public class ProductService {
     // temporário
     public ProductResponseDTO findProductById(Long id) {
         Product product = productRepository.findById(id).get();
-        product.setImages(imgProductRepository.findByProduct_Id(product.getId()));
-
         ProductResponseDTO response = ProductResponseDTO.fromEntity(product);
 
         System.out.println(response);
         return response;
     }
 
-    public List<Product> listAllProducts(){
-        return productRepository.findAll();
+    public Page<Product> listAllProducts(Pageable pageable) {
+        return productRepository.findAllByOrderByIdDesc(pageable);
     }
+
+    public Page<Product> findProductByName(String name, Pageable pageable) {
+        return productRepository.findByNameContainingIgnoreCaseOrderByIdDesc(name, pageable);
+    }
+
+    public void changeProductStatus(String id) {
+        if(id == null || id.isEmpty()) {
+            throw new InvalidUserDataException("Informe o ID do produto");
+        }
+
+        long optinalId = 0;
+
+        try {
+            optinalId = Long.parseLong(id);
+        } catch (NumberFormatException e) {
+            throw new InvalidUserDataException("ID inválido");
+        }
+
+        Product product = productRepository.findById(optinalId).orElseThrow(
+                () -> new UserNotFoundExeption("Usuário não encontrado"));
+
+        product.setStatus(!product.isStatus());
+        productRepository.save(product);
+    }
+
 
 }

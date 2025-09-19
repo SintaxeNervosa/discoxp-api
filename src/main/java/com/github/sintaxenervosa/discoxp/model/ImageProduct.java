@@ -36,12 +36,4 @@ public class ImageProduct {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Override
-    public String toString() {
-        return "ImageProduct{" +
-                "imageData=" + Arrays.toString(imageData) +
-                ", name='" + name + '\'' +
-                ", id=" + id +
-                '}';
-    }
 }

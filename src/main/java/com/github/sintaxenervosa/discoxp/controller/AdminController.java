@@ -1,11 +1,9 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
 import com.github.sintaxenervosa.discoxp.dto.product.CreateProductRequestDTO;
-import com.github.sintaxenervosa.discoxp.dto.product.ProductResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
-import com.github.sintaxenervosa.discoxp.model.Product;
 import com.github.sintaxenervosa.discoxp.service.ProductService;
 import com.github.sintaxenervosa.discoxp.service.UserService;
 import lombok.AllArgsConstructor;
@@ -35,12 +33,6 @@ public class AdminController {
         return ResponseEntity.status(204).body(HttpStatus.NO_CONTENT);
     };
 
-    @GetMapping("/product/{id}")
-    public ResponseEntity<?> findProductById(@PathVariable("id") Long id) {
-        ProductResponseDTO productResponseDTO  = productService.findProductById(id);
-        return ResponseEntity.status(200).body(productResponseDTO);
-    }
-
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody CreateUserRequestDTO request) {
         userService.createUser(request);
@@ -64,4 +56,12 @@ public class AdminController {
             throw new IllegalArgumentException(e.getMessage(), e.getCause());
         }
     }
+
+    @PutMapping("/product/status/{id}")
+    public ResponseEntity<HttpStatusCode> changeProductStatus(@PathVariable("id") String id) {
+        System.out.println(id);
+        productService.changeProductStatus(id);
+        return ResponseEntity.status(204).body(HttpStatus.NO_CONTENT);
+    };
+
 }

@@ -41,6 +41,8 @@ public class Product {
     @Column(name="quantity",nullable = false)
     private Integer quantity;
 
+    private boolean status = true;
+
     // @Lazy
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImageProduct> images = new ArrayList<>();
@@ -62,17 +64,4 @@ public class Product {
 //        image.setProduct(this);
 //    }
 
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", evaluation=" + evaluation +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                ", images=" + images +
-                '}';
-    }
 }
