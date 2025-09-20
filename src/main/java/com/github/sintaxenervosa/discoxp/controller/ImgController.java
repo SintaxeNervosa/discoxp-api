@@ -1,9 +1,12 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
 import java.net.http.HttpHeaders;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.naming.InvalidNameException;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
@@ -85,9 +88,23 @@ public ResponseEntity<List<ImgProductResponseDTO>> getProductImages(@PathVariabl
             return ResponseEntity.noContent().build();
         }
 
+        ///PRocessar imgs para incluir dats binarios
         List<ImgProductResponseDTO> imaDtos = images.stream()
-                .map(ImgProductResponseDTO::fromEntity)
-                .collect(Collectors.toList());
+            .map(image -> {
+                ImgProductResponseDTO dto = new ImgProductResponseDTO();
+                dto.setId(image.getId());
+                dto.setName(image.getName());
+
+                //adiciona data em base64
+                if(image.getImageData() != null && image.getImageData().length > 0){
+                    String contentType = detectContentType(image.getImageData());
+                      dto.setImageData("data:" + contentType + ";base64," + 
+                                Base64.getEncoder().encodeToString(image.getImageData()));
+                }else{
+                    System.out.println("Não funfou");
+                }
+                return dto;
+            }).collect(Collectors.toList());
 
         return ResponseEntity.ok(imaDtos);
     } catch (Exception e) {
