@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-
-
 @Service
 public class ProductService {
 
@@ -25,7 +23,8 @@ public class ProductService {
     private final DefaultProductValidator defaultProductValidator;
     private final ImgProductRepository imgProductRepository;
 
-    public ProductService(ProductRepository productRepository,ProductValidator productValidator, DefaultProductValidator defaultProductValidator, ImgProductRepository imgProductRepository) {
+    public ProductService(ProductRepository productRepository, ProductValidator productValidator,
+            DefaultProductValidator defaultProductValidator, ImgProductRepository imgProductRepository) {
         this.productRepository = productRepository;
         this.productValidator = productValidator;
         this.defaultProductValidator = defaultProductValidator;
@@ -57,8 +56,9 @@ public class ProductService {
         return response;
     }
 
-    public Page<Product> listAllProducts(Pageable pageable) {
-        return productRepository.findAllByOrderByIdDesc(pageable);
+    public Page<ProductResponseDTO> listAllProducts(Pageable pageable) {
+        Page<Product> productsPage = productRepository.findAllByOrderByIdDesc(pageable);
+        return productsPage.map(product -> ProductResponseDTO.fromEntity(product));
     }
 
     public Page<Product> findProductByName(String name, Pageable pageable) {
@@ -66,7 +66,7 @@ public class ProductService {
     }
 
     public void changeProductStatus(String id) {
-        if(id == null || id.isEmpty()) {
+        if (id == null || id.isEmpty()) {
             throw new InvalidUserDataException("Informe o ID do produto");
         }
 
@@ -84,6 +84,5 @@ public class ProductService {
         product.setStatus(!product.isStatus());
         productRepository.save(product);
     }
-
 
 }
