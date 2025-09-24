@@ -38,7 +38,7 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public ResponseEntity<Page<Product>> listProducts(Pageable pegeable){
+    public ResponseEntity<Page<ProductResponseDTO>> listProducts(Pageable pegeable){
         return ResponseEntity.ok(productService.listAllProducts(pegeable));
     }
 
