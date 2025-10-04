@@ -33,7 +33,7 @@ public class ProductController {
     }
 
     @GetMapping("/productsByName")
-    public ResponseEntity<Page<Product>> findProductByName(@RequestParam("name") String name, Pageable pageable) {
+    public ResponseEntity<Page<ProductResponseDTO>> findProductByName(@RequestParam("name") String name, Pageable pageable) {
         return ResponseEntity.ok(productService.findProductByName(name, pageable));
     }
 

@@ -1,6 +1,7 @@
 package com.github.sintaxenervosa.discoxp.validations.product;
 
 import com.github.sintaxenervosa.discoxp.dto.product.CreateProductRequestDTO;
+import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductQuantityRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductRequestDTO;
 import com.github.sintaxenervosa.discoxp.exception.product.InvalidProductDataException;
 import com.github.sintaxenervosa.discoxp.exception.product.ProductNotFoundException;
@@ -9,9 +10,9 @@ import com.github.sintaxenervosa.discoxp.repository.ProductRepository;
 import com.github.sintaxenervosa.discoxp.validations.ValidationErrorRegistry;
 import org.springframework.stereotype.Component;
 
-
 @Component
-public class DefaultProductValidator implements ProductValidator, NameValidator, DescriptionValidation, EvaluationValidation, PriceValidation, QuantityValidation {
+public class DefaultProductValidator implements ProductValidator, NameValidator, DescriptionValidation,
+        EvaluationValidation, PriceValidation, QuantityValidation {
 
     private final ProductRepository productRepository;
 
@@ -22,8 +23,8 @@ public class DefaultProductValidator implements ProductValidator, NameValidator,
     @Override
     public void validateProductCreation(CreateProductRequestDTO request) {
 
-        if(validateNameProduct(request.name())){
-            if(validaExistsByName(request.name())) {
+        if (validateNameProduct(request.name())) {
+            if (validaExistsByName(request.name())) {
                 ValidationErrorRegistry.addError("Nome já existente.");
             }
         }
@@ -36,7 +37,7 @@ public class DefaultProductValidator implements ProductValidator, NameValidator,
 
         validateQuantityProduct(request.quantity());
 
-        if(!ValidationErrorRegistry.hasErrors()) {
+        if (!ValidationErrorRegistry.hasErrors()) {
             return;
         }
         String errorMessage = ValidationErrorRegistry.getErrorMessage();
@@ -45,7 +46,7 @@ public class DefaultProductValidator implements ProductValidator, NameValidator,
 
     @Override
     public void validateProductUpdate(UpdateProductRequestDTO request) {
-        if(request.id() == null || request.id().isEmpty()) {
+        if (request.id() == null || request.id().isEmpty()) {
             throw new InvalidProductDataException("Informe o id do produto.");
         }
 
@@ -57,15 +58,17 @@ public class DefaultProductValidator implements ProductValidator, NameValidator,
             throw new InvalidProductDataException("ID inválido");
         }
 
-        Product product = productRepository.findById(id).
-                orElseThrow(() -> new ProductNotFoundException("Produto com o id " + request.id() + " não encontrado."));
+        Product product = productRepository.findById(id).orElseThrow(
+                () -> new ProductNotFoundException("Produto com o id " + request.id() + " não encontrado."));
 
         // validação de nome
-        if(validateNameProduct(request.name())) {
-            if(!product.getName().equalsIgnoreCase(request.name())) {
+        if (validateNameProduct(request.name())) {
+            if (!product.getName().equalsIgnoreCase(request.name())) {
                 boolean exists = validaExistsByName(request.name());
 
-                if(exists) { ValidationErrorRegistry.addError("Nome já utilizado em outro produto."); }
+                if (exists) {
+                    ValidationErrorRegistry.addError("Nome já utilizado em outro produto.");
+                }
             }
         }
 
@@ -81,7 +84,32 @@ public class DefaultProductValidator implements ProductValidator, NameValidator,
         // validação de quantidade
         validateQuantityProduct(request.quantity());
 
-        if(!ValidationErrorRegistry.hasErrors()) {
+        if (!ValidationErrorRegistry.hasErrors()) {
+            return;
+        }
+
+        String errorMessage = ValidationErrorRegistry.getErrorMessage();
+
+        throw new InvalidProductDataException(errorMessage);
+    }
+
+    @Override
+    public void validateUpdateProductQuantity(UpdateProductQuantityRequestDTO request) {
+        if (request.id() == null || request.id().isEmpty()) {
+            throw new InvalidProductDataException("Infrome o ID");
+        }
+
+        long id = 0;
+
+        try {
+            id = Long.parseLong(request.id());
+        } catch (NumberFormatException e) {
+            throw new InvalidProductDataException("ID inválido");
+        }
+
+        validateQuantityProduct(request.quantity());
+
+        if (!ValidationErrorRegistry.hasErrors()) {
             return;
         }
 

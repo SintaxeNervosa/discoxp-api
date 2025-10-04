@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.github.sintaxenervosa.discoxp.exception.product.InvalidProductDataException;
 import com.github.sintaxenervosa.discoxp.exception.product.ProductNotFoundException;
 import com.github.sintaxenervosa.discoxp.model.ImageProduct;
 import com.github.sintaxenervosa.discoxp.model.Product;
@@ -77,9 +78,7 @@ public class ImgProductService {
     }
 
     private static byte[] compressImage(MultipartFile file, float compressQuality) throws IOException { // tirar esse
-                                                                                                        // IOException e
-                                                                                                        // colocar no
-                                                                                                        // try cath
+                                                                                            // try cath
         BufferedImage iamge = ImageIO.read(file.getInputStream());
 
         ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
@@ -105,13 +104,28 @@ public class ImgProductService {
         Optional<ImageProduct> imageExist = imgProductRepository.findById(idImageProduct);
 
         if (!imageExist.isPresent()) {
-             throw new ProductNotFoundException("Imagem não encontrada!");
+            throw new ProductNotFoundException("Imagem não encontrada!");
         }
         ImageProduct image = imageExist.get();
-                if (image.getProduct().getId().equals(idProduct)) {
-                    imgProductRepository.deleteById(idImageProduct);
-                } else {
-                    throw new RuntimeException("Essa imagem não pertence ao produto!");
-                }
+        if (image.getProduct().getId().equals(idProduct)) {
+            imgProductRepository.deleteById(idImageProduct);
+        } else {
+            throw new RuntimeException("Essa imagem não pertence ao produto!");
+        }
+    }
+
+    @Transactional
+    public void deleteAllProductImage(String idProduct) {
+        Long idToLong = null;
+        try {
+            idToLong = Long.parseLong(idProduct);
+        } catch (NumberFormatException e) {
+            throw new InvalidProductDataException("ID inválido");
+        }
+
+        Product product = productRepository.findById(idToLong)
+                .orElseThrow(() -> new InvalidProductDataException("Produto não encontrado"));
+
+        imgProductRepository.deleteAllByProduct(product);
     }
 }

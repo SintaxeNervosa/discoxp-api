@@ -2,6 +2,7 @@ package com.github.sintaxenervosa.discoxp.service;
 
 import com.github.sintaxenervosa.discoxp.dto.product.CreateProductRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.product.ProductResponseDTO;
+import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductQuantityRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductRequestDTO;
 import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
 import com.github.sintaxenervosa.discoxp.exception.user.UserNotFoundExeption;
@@ -31,10 +32,10 @@ public class ProductService {
         this.imgProductRepository = imgProductRepository;
     }
 
-    public void createProduct(CreateProductRequestDTO request) {
+    public Product createProduct(CreateProductRequestDTO request) {
         productValidator.validateProductCreation(request);
         Product product = request.toEntity();
-        productRepository.save(product);
+        return productRepository.save(product);
     }
 
     public void updateProduct(UpdateProductRequestDTO request) {
@@ -45,6 +46,16 @@ public class ProductService {
         newProduct.setId(parseIdToLong);
 
         productRepository.save(newProduct);
+    }
+
+    public void updateProductQuantity(UpdateProductQuantityRequestDTO request) {
+        defaultProductValidator.validateUpdateProductQuantity(request);
+
+        Long parseIdToLong = Long.parseLong(request.id());
+        Product product = productRepository.findById(parseIdToLong).get();
+        product.setQuantity(request.quantity());
+
+        productRepository.save(product);
     }
 
     // temporário
@@ -61,11 +72,12 @@ public class ProductService {
         return productsPage.map(product -> ProductResponseDTO.fromEntity(product));
     }
 
-    public Page<Product> findProductByName(String name, Pageable pageable) {
-        return productRepository.findByNameContainingIgnoreCaseOrderByIdDesc(name, pageable);
+    public Page<ProductResponseDTO> findProductByName(String name, Pageable pageable) {
+        Page<Product> products = productRepository.findByNameContainingIgnoreCaseOrderByIdDesc(name, pageable);
+        return products.map(product -> ProductResponseDTO.fromEntity(product));
     }
 
-    public void changeProductStatus(String id) {
+        public void changeProductStatus(String id) {
         if (id == null || id.isEmpty()) {
             throw new InvalidUserDataException("Informe o ID do produto");
         }

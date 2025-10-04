@@ -12,4 +12,5 @@ import com.github.sintaxenervosa.discoxp.model.Product;
 public interface  ImgProductRepository extends JpaRepository<ImageProduct, Long>{
     List<ImageProduct> findByProduct_Id(Long productId);
     List<ImageProduct> findByProduct(Product product);
+    void deleteAllByProduct(Product product);
 }

@@ -1,12 +1,15 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
 import com.github.sintaxenervosa.discoxp.dto.product.CreateProductRequestDTO;
+import com.github.sintaxenervosa.discoxp.dto.product.CreateProductResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
+import com.github.sintaxenervosa.discoxp.model.Product;
 import com.github.sintaxenervosa.discoxp.service.ProductService;
 import com.github.sintaxenervosa.discoxp.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -14,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/admin")
 public class AdminController {
 
@@ -48,10 +51,10 @@ public class AdminController {
     };
 
     @PostMapping("/createProduct")
-    public ResponseEntity<?> createProduct(@RequestBody CreateProductRequestDTO request){
+    public ResponseEntity<CreateProductResponseDTO> createProduct(@RequestBody CreateProductRequestDTO request) {
         try {
-            productService.createProduct(request);
-            return ResponseEntity.status(200).body("Produto criado!");
+            Product product = productService.createProduct(request);
+            return ResponseEntity.status(200).body(CreateProductResponseDTO.fromEntity(product));
         } catch (Exception e) {
             throw new IllegalArgumentException(e.getMessage(), e.getCause());
         }
