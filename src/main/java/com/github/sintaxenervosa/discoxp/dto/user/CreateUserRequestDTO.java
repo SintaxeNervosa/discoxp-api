@@ -1,5 +1,15 @@
 package com.github.sintaxenervosa.discoxp.dto.user;
 
-import com.github.sintaxenervosa.discoxp.model.Group;
+import java.time.LocalDate;
 
-public record CreateUserRequestDTO(String name, String email, String group, String password, String cpf) { }
+import io.micrometer.common.lang.Nullable;
+
+public record CreateUserRequestDTO(
+        String name,
+        String email,
+        String group,
+        String password,
+        String cpf,
+        @Nullable LocalDate dateOfBirth,
+        @Nullable String gender) {
+}

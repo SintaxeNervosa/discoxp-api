@@ -18,7 +18,5 @@ public class UserDto {
         this.email = user.getEmail();
         this.groupEnum = user.getGroupEnum().toString();
         this.status = user.isStatus();
-
-
     }
 }

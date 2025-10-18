@@ -21,9 +21,6 @@ public class DiscoxpApplication {
     
     private static final Logger logger = LoggerFactory.getLogger(DiscoxpApplication.class);
     
-    @Autowired
-    private Environment environment;
-
     public static void main(String[] args) {
 
             SpringApplication app = new SpringApplication(DiscoxpApplication.class);

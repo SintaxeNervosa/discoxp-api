@@ -1,6 +1,8 @@
 package com.github.sintaxenervosa.discoxp.validations.user;
 
 import com.github.sintaxenervosa.discoxp.validations.ValidationErrorRegistry;
+
+import org.hibernate.usertype.UserType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +10,7 @@ import com.github.sintaxenervosa.discoxp.dto.user.LoginRequestDto;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
+import com.github.sintaxenervosa.discoxp.model.Group;
 import com.github.sintaxenervosa.discoxp.model.User;
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
 
@@ -49,6 +52,12 @@ public class DefaultUserValidator implements UserValidator, EmailValidator, Pass
 
         // validação do grupo
         validateGroup(request.group());
+
+
+        // adicionar validações de usuário tipo "CLIENT"
+        if(request.group().equals(Group.CLIENT)) {
+            
+        }
 
         // retorna caso não haja erros na lista
         if (!ValidationErrorRegistry.hasErrors()) {

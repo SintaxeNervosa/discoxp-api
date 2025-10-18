@@ -50,7 +50,6 @@ public class UserService {
         return LoginResponseDto.fromEntity(user);
     }
 
-
     //Listar todos os usuários
     public List<User> findAllUsers() {
         return userRepository.findAll();

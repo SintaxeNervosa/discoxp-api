@@ -1,6 +1,7 @@
 package com.github.sintaxenervosa.discoxp.model;
 
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
+import java.time.LocalDate;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,6 +35,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Group groupEnum;
 
+    @Column(nullable = true)
+    private LocalDate dateOfBirth;
+
+    @Column(nullable = true)
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
     public User(String name, String email, String password, Group groupEnum) {
         this.name = name;
         this.email = email;
@@ -41,11 +49,22 @@ public class User {
         this.groupEnum = groupEnum;
     }
 
-    public User(CreateUserRequestDTO userRequest){
+    // estoquista && admin
+    public User(CreateUserRequestDTO userRequest) {
         this.name = userRequest.name();
         this.email = userRequest.email();
         this.password = userRequest.password();
         this.cpf = userRequest.cpf();
         this.groupEnum = Group.valueOf(userRequest.group());
+    }
+
+    // client
+    public User(String name, String email, String password, Group groupEnum, LocalDate dateOfBirth, Gender gender) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.groupEnum = groupEnum;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
     }
 }

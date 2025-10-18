@@ -22,21 +22,18 @@ import com.github.sintaxenervosa.discoxp.model.ImageProduct;
 import com.github.sintaxenervosa.discoxp.model.Product;
 import com.github.sintaxenervosa.discoxp.repository.ImgProductRepository;
 import com.github.sintaxenervosa.discoxp.repository.ProductRepository;
-import com.github.sintaxenervosa.discoxp.validations.img.DefaultProductImageValidator;
 import com.github.sintaxenervosa.discoxp.validations.img.ImgProductValidator;
 
 @Service
 public class ImgProductService {
     private ImgProductRepository imgProductRepository;
     private ProductRepository productRepository;
-    private final DefaultProductImageValidator defaultImageValidator;
     private final ImgProductValidator imgProductValidator;
 
     public ImgProductService(ImgProductRepository imgProductRepository, ProductRepository productRepository,
-            DefaultProductImageValidator defaultImageValidator, ImgProductValidator imgProductValidator) {
+            ImgProductValidator imgProductValidator) {
         this.imgProductRepository = imgProductRepository;
         this.productRepository = productRepository;
-        this.defaultImageValidator = defaultImageValidator;
         this.imgProductValidator = imgProductValidator;
     }
 
@@ -78,7 +75,7 @@ public class ImgProductService {
     }
 
     private static byte[] compressImage(MultipartFile file, float compressQuality) throws IOException { // tirar esse
-                                                                                            // try cath
+        // try cath
         BufferedImage iamge = ImageIO.read(file.getInputStream());
 
         ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
