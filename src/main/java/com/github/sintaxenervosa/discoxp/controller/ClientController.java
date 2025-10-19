@@ -1,11 +1,9 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
+import com.github.sintaxenervosa.discoxp.dto.client.ExistsEmailResponseDTO;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.service.ClientService;
@@ -27,6 +25,11 @@ public class ClientController {
     public ResponseEntity<HttpStatusCode> create(@RequestBody CreateUserRequestDTO request) {
         userService.createUser(request);
         return null;
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<ExistsEmailResponseDTO> emailExists(@PathVariable("email") String email) {
+          return ResponseEntity.ok().body(userService.emailExists(email));
     }
 
 }

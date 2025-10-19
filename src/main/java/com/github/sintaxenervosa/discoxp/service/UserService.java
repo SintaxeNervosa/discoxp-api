@@ -1,5 +1,6 @@
 package com.github.sintaxenervosa.discoxp.service;
 
+import com.github.sintaxenervosa.discoxp.dto.client.ExistsEmailResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
@@ -97,5 +98,9 @@ public class UserService {
         User user = userRepository.findById(Long.parseLong(id)).get();
         user.setStatus(!user.isStatus());
         userRepository.save(user);
+    }
+
+    public ExistsEmailResponseDTO emailExists(String email) {
+        return ExistsEmailResponseDTO.fromEntity(userRepository.existsByEmail(email));
     }
 }
