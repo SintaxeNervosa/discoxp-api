@@ -1,5 +1,6 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
+import com.github.sintaxenervosa.discoxp.dto.client.ExistsCpfResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.client.ExistsEmailResponseDTO;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -32,4 +33,8 @@ public class ClientController {
           return ResponseEntity.ok().body(userService.emailExists(email));
     }
 
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<ExistsCpfResponseDTO> cpfExists(@PathVariable("cpf") String cpf) {
+          return ResponseEntity.ok().body(userService.cpfExists(cpf));
+    }
 }

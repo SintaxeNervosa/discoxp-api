@@ -1,5 +1,6 @@
 package com.github.sintaxenervosa.discoxp.service;
 
+import com.github.sintaxenervosa.discoxp.dto.client.ExistsCpfResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.client.ExistsEmailResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
@@ -102,5 +103,9 @@ public class UserService {
 
     public ExistsEmailResponseDTO emailExists(String email) {
         return ExistsEmailResponseDTO.fromEntity(userRepository.existsByEmail(email));
+    }
+
+    public ExistsCpfResponseDTO cpfExists(String cpf) {
+        return ExistsCpfResponseDTO.fromEntity(userRepository.existsByCpf(cpf));
     }
 }
