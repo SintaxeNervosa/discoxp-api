@@ -15,7 +15,7 @@ import com.github.sintaxenervosa.discoxp.model.User;
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
 
 @Component
-public class DefaultUserValidator implements UserValidator, EmailValidator, PasswordValidator, NameValidator, CpfValidator, GroupValidator {
+public class DefaultUserValidator implements UserValidator, EmailValidator, PasswordValidator, NameValidator, CpfValidator, GroupValidator, BirthDateValidator, GenderValidator {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -53,10 +53,10 @@ public class DefaultUserValidator implements UserValidator, EmailValidator, Pass
         // validação do grupo
         validateGroup(request.group());
 
-
-        // adicionar validações de usuário tipo "CLIENT"
-        if(request.group().equals(Group.CLIENT)) {
-            
+        if(request.group().equals(Group.CLIENT.toString())) {
+            System.out.println("AQUI!");
+            validateBirthDate(request.dateOfBirth());
+            validateGender(request.gender());
         }
 
         // retorna caso não haja erros na lista
