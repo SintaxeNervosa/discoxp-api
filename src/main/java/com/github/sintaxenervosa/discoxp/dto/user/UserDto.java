@@ -6,12 +6,12 @@ import lombok.Getter;
 @Getter
 public class UserDto {
 
-    private Long id;
-    private String name;
-    private String email;
-    private String groupEnum;
-    private boolean status;
-
+    private final Long id;
+    private final String name;
+    private final String email;
+    private final String groupEnum;
+    private final boolean status;
+    
     public UserDto(User user) {
         this.id = user.getId();
         this.name = user.getName();

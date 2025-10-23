@@ -43,12 +43,21 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public LoginResponseDto loginUser(LoginRequestDto request){
+    public LoginResponseDto loginUser(LoginRequestDto request) {
         userValidator.validateLogin(request);
 
-        User user = userRepository.findByEmail(request.email()).get();
+        User user = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        // ✅ compara senha digitada com a senha criptografada
+        boolean validPassword = passwordEncoder.matches(request.password(), user.getPassword());
+        if (!validPassword) {
+            throw new RuntimeException("Email e/ou senha inválidos");
+        }
+
         return LoginResponseDto.fromEntity(user);
     }
+
 
 
     //Listar todos os usuários
