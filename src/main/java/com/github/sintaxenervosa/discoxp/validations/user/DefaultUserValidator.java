@@ -24,7 +24,7 @@ public class DefaultUserValidator implements UserValidator, EmailValidator, Pass
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
+    // receber o TIPO USER no parametro
     @Override
     public void validateUserCreation(CreateUserRequestDTO request) {
 

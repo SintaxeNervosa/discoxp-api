@@ -1,5 +1,6 @@
 package com.github.sintaxenervosa.discoxp.model;
 
+import com.github.sintaxenervosa.discoxp.dto.client.CreateClientRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import java.time.LocalDate;
 import jakarta.persistence.*;
@@ -56,8 +57,14 @@ public class    User {
         this.password = userRequest.password();
         this.cpf = userRequest.cpf();
         this.groupEnum = Group.valueOf(userRequest.group());
-        this.dateOfBirth = userRequest.dateOfBirth();
-        this.gender = Gender.valueOf(userRequest.gender());
+    }
+
+    public User(CreateClientRequestDTO clientRequestDTO) {
+        this.name = clientRequestDTO.name();
+        this.email = clientRequestDTO.email();
+        this.password = clientRequestDTO.password();
+        this.cpf = clientRequestDTO.cpf();
+        this.groupEnum = Group.CLIENT;
     }
 
     // client

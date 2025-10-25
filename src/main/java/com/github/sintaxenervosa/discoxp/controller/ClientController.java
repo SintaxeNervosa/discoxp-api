@@ -1,7 +1,9 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
+import com.github.sintaxenervosa.discoxp.dto.client.CreateClientRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.client.ExistsCpfResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.client.ExistsEmailResponseDTO;
+import com.github.sintaxenervosa.discoxp.model.User;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +24,16 @@ public class ClientController {
         this.clientService = clientService;
     }
 
+    // alterar a dto para adicionar os campos de data de nascimento e gênero
     @PostMapping
-    public ResponseEntity<HttpStatusCode> create(@RequestBody CreateUserRequestDTO request) {
+    public ResponseEntity<HttpStatusCode> create(@RequestBody CreateClientRequestDTO request) {
+        User user = new  User(request);
         userService.createUser(request);
         return null;
     }
+
+    // implementar a rota para editar o clien
+    // obs
 
     @GetMapping("/email/{email}")
     public ResponseEntity<ExistsEmailResponseDTO> emailExists(@PathVariable("email") String email) {
