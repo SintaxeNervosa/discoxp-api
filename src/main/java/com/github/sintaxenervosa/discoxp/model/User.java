@@ -3,6 +3,9 @@ package com.github.sintaxenervosa.discoxp.model;
 import com.github.sintaxenervosa.discoxp.dto.client.CreateClientRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -45,6 +48,10 @@ public class User {
 
     @OneToOne(cascade = CascadeType.REMOVE)
     private BillingAddress billingAddress;
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user")
+    private List<DeliveryAddress> deliveryAddresses;
 
     public User(String name, String email, String password, Group groupEnum) {
         this.name = name;

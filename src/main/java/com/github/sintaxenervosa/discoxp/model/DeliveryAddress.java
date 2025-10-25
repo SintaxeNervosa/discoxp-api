@@ -1,0 +1,42 @@
+
+package com.github.sintaxenervosa.discoxp.model;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Setter
+@Getter
+@Table(name = "tb_delivery_address")
+public class DeliveryAddress {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(length = 9, nullable = false)
+    private String cep;
+
+    @Column(length = 60, nullable = false)
+    private String street;
+
+    @Column(length = 6)
+    private String numero;
+
+    @Column(length = 150)
+    private String complement;
+
+    @Column(length = 60, nullable = false)
+    private String bairro;
+
+    @Column(length = 50, nullable = false)
+    private String cidade;
+
+    @Column(length = 2, nullable = false)
+    private String uf;
+
+    @ManyToOne
+    private User user;
+}
+

@@ -41,9 +41,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidAddressException.class)
     ResponseEntity<ErrorResponse> handleProductNotFoundException(InvalidAddressException error) {
-        ErrorResponse errorResponse = new ErrorResponse("Endereço não encontrado");
+        ErrorResponse errorResponse = new ErrorResponse(error.getMessage());
         return ResponseEntity.status(404).body(errorResponse);
     }
+
     @ExceptionHandler(DuplicateAddressException.class)
     ResponseEntity<ErrorResponse> handleProductNotFoundException() {
         ErrorResponse errorResponse = new ErrorResponse("Não foi possível inserir o endereço.");

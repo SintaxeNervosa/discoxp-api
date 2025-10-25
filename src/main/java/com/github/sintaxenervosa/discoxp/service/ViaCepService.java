@@ -5,8 +5,10 @@ import com.github.sintaxenervosa.discoxp.exception.address.DuplicateAddressExcep
 import com.github.sintaxenervosa.discoxp.exception.address.InvalidAddressException;
 import com.github.sintaxenervosa.discoxp.exception.user.UserNotFoundExeption;
 import com.github.sintaxenervosa.discoxp.model.BillingAddress;
+import com.github.sintaxenervosa.discoxp.model.DeliveryAddress;
 import com.github.sintaxenervosa.discoxp.model.User;
 import com.github.sintaxenervosa.discoxp.repository.BillingAddressRepository;
+import com.github.sintaxenervosa.discoxp.repository.DeliveryAddressRepository;
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +27,7 @@ public class ViaCepService {
 
     private final UserRepository userRepository;
     private final BillingAddressRepository billingAddressRepository;
+    private final DeliveryAddressRepository deliveryAddressRepository;
 
     private static final String VIA_CEP_URL = "https://viacep.com.br/ws/{cep}/json/";
 
@@ -49,7 +54,6 @@ public class ViaCepService {
                 .orElseThrow(() -> new UserNotFoundExeption("Usuário não encontrado"));
 
         billingAddress.setUser(user);
-
         // salva o endereço de entrega
 
         try {
@@ -61,5 +65,39 @@ public class ViaCepService {
         } catch (Exception error) {
             throw new DuplicateAddressException();
         }
+    }
+
+    public void fyndCepFromDelivery(RequestAddressDTO request) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        Map<String, Object> resposta;
+        try {
+            resposta = restTemplate.getForObject(VIA_CEP_URL, Map.class, request.cep());
+        } catch (HttpClientErrorException e) {
+            throw new InvalidAddressException("CEP inválido ou não encontrado");
+        }
+
+        DeliveryAddress deliveryAddress = new DeliveryAddress();
+        deliveryAddress.setCep(resposta.get("cep").toString());
+        deliveryAddress.setStreet(resposta.get("logradouro").toString());
+        deliveryAddress.setNumero(request.number());
+        deliveryAddress.setComplement(request.complement());
+        deliveryAddress.setBairro(resposta.get("bairro").toString());
+        deliveryAddress.setCidade(resposta.get("localidade").toString());
+        deliveryAddress.setUf(resposta.get("uf").toString());
+
+        User user = userRepository.findById(Long.parseLong(request.id()))
+                .orElseThrow(() -> new UserNotFoundExeption("Usuário não encontrado"));
+
+        deliveryAddress.setUser(user);
+
+        if (deliveryAddressRepository.existsByUserIdAndCepAndNumero(user.getId(), deliveryAddress.getCep(), deliveryAddress.getNumero())) {
+            throw new InvalidAddressException("Endereço já cadastrado");
+        }
+
+        deliveryAddressRepository.save(deliveryAddress);
+        List<DeliveryAddress> deliveryAddresses = deliveryAddressRepository.findAllByUser(user);
+        user.setDeliveryAddresses(deliveryAddresses);
+        userRepository.save(user);
     }
 }
