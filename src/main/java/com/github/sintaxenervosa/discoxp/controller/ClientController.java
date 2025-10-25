@@ -27,8 +27,7 @@ public class ClientController {
     // alterar a dto para adicionar os campos de data de nascimento e gênero
     @PostMapping
     public ResponseEntity<HttpStatusCode> create(@RequestBody CreateClientRequestDTO request) {
-        User user = new  User(request);
-        userService.createUser(request);
+        // userService.createUser(request);
         return null;
     }
 

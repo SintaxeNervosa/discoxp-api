@@ -15,11 +15,11 @@ public interface BirthDateValidator {
             return;
         }
         if (birthDate.isAfter(now)) {
-            ValidationErrorRegistry.addError("Data de ivalida!");
+            ValidationErrorRegistry.addError("Data de invalida!");
             return;
         }
         if (birthDate.isBefore(limiteMinimo)) {
-            ValidationErrorRegistry.addError("Data de ivalida!");
+            ValidationErrorRegistry.addError("Data de invalida!");
             return;
         }
 

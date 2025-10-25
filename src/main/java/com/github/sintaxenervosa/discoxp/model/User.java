@@ -11,8 +11,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tb_user")
-@Entity()
-public class    User {
+@Entity
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +42,9 @@ public class    User {
     @Column(nullable = true)
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    private BillingAddress billingAddress;
 
     public User(String name, String email, String password, Group groupEnum) {
         this.name = name;

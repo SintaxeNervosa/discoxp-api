@@ -36,8 +36,8 @@ public class UserService {
         this.defaultUserValidator = defaultUserValidator;
     }
 
-    // TIPO USUÁRIO
-    public void createUser(User request) {
+    // TIPO UUS
+    public void createUser(CreateUserRequestDTO request) {
         userValidator.validateUserCreation(request);
         String encodedPassword = passwordEncoder.encode(request.password());
         User user = new User(request);
