@@ -1,9 +1,7 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
-import com.github.sintaxenervosa.discoxp.dto.client.CreateClientRequestDTO;
-import com.github.sintaxenervosa.discoxp.dto.client.ExistsCpfResponseDTO;
-import com.github.sintaxenervosa.discoxp.dto.client.ExistsEmailResponseDTO;
-import com.github.sintaxenervosa.discoxp.dto.client.UpdateClientRequestDTO;
+import com.github.sintaxenervosa.discoxp.dto.client.*;
+import com.github.sintaxenervosa.discoxp.dto.user.CreateUserResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.model.User;
 
@@ -28,15 +26,19 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    // alterar a dto para adicionar os campos de data de nascimento e gênero
     @PostMapping
-    public ResponseEntity<HttpStatusCode> create(@RequestBody CreateClientRequestDTO request) {
-        // userService.createUser(request);
-        return null;
-    }
+    public ResponseEntity<CreateUserResponseDTO> create(@RequestBody CreateClientRequestDTO request) {
+        CreateUserRequestDTO dto = new CreateUserRequestDTO(
+                request.name(),
+                request.email(),
+                "CLIENT",
+                request.password(),
+                request.cpf(),
+                request.dateOfBirth(),
+                request.gender());
 
-    // implementar a rota para editar o clien
-    // obs
+        return ResponseEntity.ok(userService.createUser(dto));
+    }
 
     @GetMapping("/email/{email}")
     public ResponseEntity<ExistsEmailResponseDTO> emailExists(@PathVariable("email") String email) {

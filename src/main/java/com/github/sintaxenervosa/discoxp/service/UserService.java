@@ -2,8 +2,7 @@ package com.github.sintaxenervosa.discoxp.service;
 
 import com.github.sintaxenervosa.discoxp.dto.client.ExistsCpfResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.client.ExistsEmailResponseDTO;
-import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
-import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
+import com.github.sintaxenervosa.discoxp.dto.user.*;
 import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
 import com.github.sintaxenervosa.discoxp.exception.user.UserNotFoundExeption;
 import com.github.sintaxenervosa.discoxp.model.Gender;
@@ -14,9 +13,6 @@ import com.github.sintaxenervosa.discoxp.repository.UserRepository;
 import com.github.sintaxenervosa.discoxp.validations.user.DefaultUserValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.github.sintaxenervosa.discoxp.dto.user.LoginRequestDto;
-import com.github.sintaxenervosa.discoxp.dto.user.LoginResponseDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,13 +34,14 @@ public class UserService {
     }
 
     // TIPO UUS
-    public void createUser(CreateUserRequestDTO request) {
+    public CreateUserResponseDTO createUser(CreateUserRequestDTO request) {
         userValidator.validateUserCreation(request);
         String encodedPassword = passwordEncoder.encode(request.password());
         User user = new User(request);
 
         user.setPassword(encodedPassword);
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return CreateUserResponseDTO.fromEntity(savedUser);
     }
 
     public LoginResponseDto loginUser(LoginRequestDto request){

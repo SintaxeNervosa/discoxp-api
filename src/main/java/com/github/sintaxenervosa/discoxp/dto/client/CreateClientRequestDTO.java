@@ -1,3 +1,11 @@
 package com.github.sintaxenervosa.discoxp.dto.client;
 
-public record CreateClientRequestDTO (String id, String name, String email, String cpf, String password, String dateOfBirth, String gender){}
+import java.time.LocalDate;
+
+public record CreateClientRequestDTO (
+        String name,
+        String email,
+        String cpf,
+        String password,
+        LocalDate dateOfBirth,
+        String gender){}
