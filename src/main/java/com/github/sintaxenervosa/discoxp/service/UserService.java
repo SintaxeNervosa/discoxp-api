@@ -6,6 +6,7 @@ import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
 import com.github.sintaxenervosa.discoxp.exception.user.UserNotFoundExeption;
+import com.github.sintaxenervosa.discoxp.model.Gender;
 import com.github.sintaxenervosa.discoxp.model.Group;
 import com.github.sintaxenervosa.discoxp.model.User;
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
@@ -92,6 +93,8 @@ public class UserService {
         newUser.setName(request.name());
         newUser.setCpf(request.cpf());
         newUser.setGroupEnum(Group.valueOf(request.group()));
+        newUser.setDateOfBirth(request.dateOfBirth());
+        newUser.setGender(Gender.valueOf(request.gender()));
 
         userRepository.save(newUser);
     }

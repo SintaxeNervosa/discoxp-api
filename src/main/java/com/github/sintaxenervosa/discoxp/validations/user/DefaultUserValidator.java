@@ -54,7 +54,6 @@ public class DefaultUserValidator implements UserValidator, EmailValidator, Pass
         validateGroup(request.group());
 
         if(request.group().equals(Group.CLIENT.toString())) {
-            System.out.println("AQUI!");
             validateBirthDate(request.dateOfBirth());
             validateGender(request.gender());
         }
@@ -78,6 +77,11 @@ public class DefaultUserValidator implements UserValidator, EmailValidator, Pass
         }
 
         validateGroup(request.group());
+
+        if(request.group().equals(Group.CLIENT.toString())) {
+            validateBirthDate(request.dateOfBirth());
+            validateGender(request.gender());
+        }
 
         // se o cpf for diferente
         if (!savedUser.getCpf().equals(request.cpf())) {

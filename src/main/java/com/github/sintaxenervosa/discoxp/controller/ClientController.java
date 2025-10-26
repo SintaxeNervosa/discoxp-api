@@ -4,6 +4,7 @@ import com.github.sintaxenervosa.discoxp.dto.client.CreateClientRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.client.ExistsCpfResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.client.ExistsEmailResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.client.UpdateClientRequestDTO;
+import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.model.User;
 
 import org.springframework.http.HttpStatus;
@@ -48,7 +49,7 @@ public class ClientController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<HttpStatusCode> upadateClient(@RequestBody UpdateClientRequestDTO request) {
+    public ResponseEntity<HttpStatusCode> updateClient(@RequestBody UpdateUserRequestDTO request) {
         clientService.changeClient(request);
         return ResponseEntity.status(200).body(HttpStatus.NO_CONTENT);
     } 
