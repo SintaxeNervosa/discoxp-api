@@ -3,7 +3,10 @@ package com.github.sintaxenervosa.discoxp.controller;
 import com.github.sintaxenervosa.discoxp.dto.client.CreateClientRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.client.ExistsCpfResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.client.ExistsEmailResponseDTO;
+import com.github.sintaxenervosa.discoxp.dto.client.UpdateClientRequestDTO;
 import com.github.sintaxenervosa.discoxp.model.User;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,4 +46,10 @@ public class ClientController {
     public ResponseEntity<ExistsCpfResponseDTO> cpfExists(@PathVariable("cpf") String cpf) {
           return ResponseEntity.ok().body(userService.cpfExists(cpf));
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<HttpStatusCode> upadateClient(@RequestBody UpdateClientRequestDTO request) {
+        clientService.changeClient(request);
+        return ResponseEntity.status(200).body(HttpStatus.NO_CONTENT);
+    } 
 }
