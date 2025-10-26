@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface DeliveryAddressRepository extends JpaRepository<DeliveryAddress, Long> {
-    boolean existsByUserIdAndCepAndNumero(Long userId, String cep, String numero);
+    boolean existsByUserIdAndCepAndNumber(Long userId, String cep, String numero);
 
     List<DeliveryAddress> findAllByUser(User user);
 }

@@ -24,6 +24,6 @@ public class DeliveryAddressController {
     @PostMapping
     public ResponseEntity<HttpStatusCode> addAddress(@RequestBody RequestAddressDTO request) {
         viaCepService.fyndCepFromDelivery(request);
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        return ResponseEntity.status(201).build();
     }
 }

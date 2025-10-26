@@ -77,13 +77,15 @@ public class ViaCepService {
             throw new InvalidAddressException("CEP inválido ou não encontrado");
         }
 
+        System.out.println(resposta);
+
         DeliveryAddress deliveryAddress = new DeliveryAddress();
         deliveryAddress.setCep(resposta.get("cep").toString());
         deliveryAddress.setStreet(resposta.get("logradouro").toString());
-        deliveryAddress.setNumero(request.number());
+        deliveryAddress.setNumber(request.number());
         deliveryAddress.setComplement(request.complement());
-        deliveryAddress.setBairro(resposta.get("bairro").toString());
-        deliveryAddress.setCidade(resposta.get("localidade").toString());
+        deliveryAddress.setNeighborhood(resposta.get("bairro").toString());
+        deliveryAddress.setCity(resposta.get("localidade").toString());
         deliveryAddress.setUf(resposta.get("uf").toString());
 
         User user = userRepository.findById(Long.parseLong(request.id()))
@@ -91,7 +93,7 @@ public class ViaCepService {
 
         deliveryAddress.setUser(user);
 
-        if (deliveryAddressRepository.existsByUserIdAndCepAndNumero(user.getId(), deliveryAddress.getCep(), deliveryAddress.getNumero())) {
+        if (deliveryAddressRepository.existsByUserIdAndCepAndNumber(user.getId(), deliveryAddress.getCep(), deliveryAddress.getNumber())) {
             throw new InvalidAddressException("Endereço já cadastrado");
         }
 

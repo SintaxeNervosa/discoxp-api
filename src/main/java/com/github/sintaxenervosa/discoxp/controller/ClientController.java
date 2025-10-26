@@ -37,7 +37,7 @@ public class ClientController {
                 request.dateOfBirth(),
                 request.gender());
 
-        return ResponseEntity.ok(userService.createUser(dto));
+        return ResponseEntity.status(201).body(userService.createUser(dto));
     }
 
     @GetMapping("/email/{email}")

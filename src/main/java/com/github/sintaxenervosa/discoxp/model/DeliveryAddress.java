@@ -22,16 +22,16 @@ public class DeliveryAddress {
     private String street;
 
     @Column(length = 6)
-    private String numero;
+    private String number;
 
     @Column(length = 150)
     private String complement;
 
     @Column(length = 60, nullable = false)
-    private String bairro;
+    private String neighborhood;
 
     @Column(length = 50, nullable = false)
-    private String cidade;
+    private String city;
 
     @Column(length = 2, nullable = false)
     private String uf;

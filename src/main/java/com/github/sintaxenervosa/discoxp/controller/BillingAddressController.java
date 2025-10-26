@@ -24,6 +24,6 @@ public class BillingAddressController {
     @PostMapping
     public ResponseEntity<HttpStatusCode> addAddress(@RequestBody RequestAddressDTO request) {
         viaCepService.findByCepFromAddress(request);
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        return ResponseEntity.status(201).build();
     };
 }
