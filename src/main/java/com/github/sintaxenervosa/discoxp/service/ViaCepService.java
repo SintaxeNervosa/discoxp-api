@@ -77,8 +77,6 @@ public class ViaCepService {
             throw new InvalidAddressException("CEP inválido ou não encontrado");
         }
 
-        System.out.println(resposta);
-
         DeliveryAddress deliveryAddress = new DeliveryAddress();
         deliveryAddress.setCep(resposta.get("cep").toString());
         deliveryAddress.setStreet(resposta.get("logradouro").toString());
@@ -90,6 +88,10 @@ public class ViaCepService {
 
         User user = userRepository.findById(Long.parseLong(request.id()))
                 .orElseThrow(() -> new UserNotFoundExeption("Usuário não encontrado"));
+
+        if(user.getDeliveryAddresses().isEmpty()) {
+            deliveryAddress.setFavorite(true);
+        }
 
         deliveryAddress.setUser(user);
 

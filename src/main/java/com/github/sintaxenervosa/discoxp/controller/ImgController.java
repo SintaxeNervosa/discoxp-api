@@ -34,7 +34,7 @@ import org.apache.tika.Tika;
 @RequiredArgsConstructor
 @RestController
 public class ImgController {
-    private final Tika tika = new Tika();// TIKA!!!!!!!!!
+    private final Tika tika = new Tika();
     private final ImgProductService imgProductService;
     private final ImgProductRepository imgProductRepository;
 
