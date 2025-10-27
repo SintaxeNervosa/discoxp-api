@@ -36,6 +36,8 @@ public class DeliveryAddress {
     @Column(length = 2, nullable = false)
     private String uf;
 
+    private boolean isFavorite = false;
+
     @ManyToOne
     private User user;
 }

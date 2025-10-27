@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface DeliveryAddressRepository extends JpaRepository<DeliveryAddress, Long> {
     boolean existsByUserIdAndCepAndNumber(Long userId, String cep, String numero);
-
     List<DeliveryAddress> findAllByUser(User user);
+    boolean existsById(Long id);
 }
