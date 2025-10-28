@@ -1,5 +1,6 @@
 package com.github.sintaxenervosa.discoxp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.sintaxenervosa.discoxp.dto.client.CreateClientRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserRequestDTO;
 import java.time.LocalDate;
@@ -46,12 +47,14 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch =  FetchType.LAZY)
+    @JsonIgnore
     private BillingAddress billingAddress;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
-    private List<DeliveryAddress> deliveryAddresses;
+    @JsonIgnore
+        private List<DeliveryAddress> deliveryAddresses;
 
     public User(String name, String email, String password, Group groupEnum) {
         this.name = name;
