@@ -5,14 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductRequestDTO;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Lazy;
@@ -47,6 +40,9 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImageProduct> images = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product")
+    private List<OrderItem> orderItem;
+
     // construtor para atualizar o produto
     public Product(UpdateProductRequestDTO product) {
         this.name = product.name();
@@ -57,11 +53,4 @@ public class Product {
     }
 
     public Product() { }
-
-    //Em tese esse método iara auxiliar a adicionar as images
-//    public void addImage(ImageProduct image){
-//        images.add(image);
-//        image.setProduct(this);
-//    }
-
 }

@@ -2,6 +2,7 @@ package com.github.sintaxenervosa.discoxp.exception;
 
 import com.github.sintaxenervosa.discoxp.exception.address.DuplicateAddressException;
 import com.github.sintaxenervosa.discoxp.exception.address.InvalidAddressException;
+import com.github.sintaxenervosa.discoxp.exception.order.InvalidOrderException;
 import com.github.sintaxenervosa.discoxp.exception.product.InvalidProductDataException;
 import com.github.sintaxenervosa.discoxp.exception.product.ProductNotFoundException;
 import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
@@ -48,6 +49,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateAddressException.class)
     ResponseEntity<ErrorResponse> handleProductNotFoundException() {
         ErrorResponse errorResponse = new ErrorResponse("Não foi possível inserir o endereço.");
+        return ResponseEntity.status(400).body(errorResponse);
+    }
+
+    @ExceptionHandler(InvalidOrderException.class)
+    ResponseEntity<ErrorResponse> handleOrderDataException(InvalidOrderException error) {
+        ErrorResponse errorResponse = new ErrorResponse(error.getMessage());
         return ResponseEntity.status(400).body(errorResponse);
     }
 }
