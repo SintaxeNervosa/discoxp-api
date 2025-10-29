@@ -1,5 +1,6 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
+import com.github.sintaxenervosa.discoxp.dto.address.AddressResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.address.ChangeFavoriteAddressRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.address.RequestAddressDTO;
 import com.github.sintaxenervosa.discoxp.model.DeliveryAddress;
@@ -28,12 +29,12 @@ public class DeliveryAddressController {
     @PostMapping
     public ResponseEntity<HttpStatusCode> addAddress(@RequestBody RequestAddressDTO request) {
         viaCepService.fyndCepFromDelivery(request);
-        return ResponseEntity.status(201).build()   ;
+        return ResponseEntity.status(201).build();
     }
 
     @GetMapping("{userId}")
-    public ResponseEntity<List<DeliveryAddress>> getAllDeliveryAddressesByUserId(@PathVariable("userId") String id) {
-        List<DeliveryAddress> deliveryAddressList = deliveryAddressService.getAllDeliveryAddressesByUserId(id);
+    public ResponseEntity<List<AddressResponseDTO>> getAllDeliveryAddressesByUserId(@PathVariable("userId") String id) {
+        List<AddressResponseDTO> deliveryAddressList = deliveryAddressService.getAllDeliveryAddressesByUserId(id);
         return ResponseEntity.status(200).body(deliveryAddressList) ;
     }
 

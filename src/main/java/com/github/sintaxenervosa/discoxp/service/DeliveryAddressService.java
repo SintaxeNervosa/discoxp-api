@@ -1,5 +1,6 @@
 package com.github.sintaxenervosa.discoxp.service;
 
+import com.github.sintaxenervosa.discoxp.dto.address.AddressResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.address.ChangeFavoriteAddressRequestDTO;
 import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
 import com.github.sintaxenervosa.discoxp.exception.user.UserNotFoundExeption;
@@ -31,7 +32,7 @@ public class DeliveryAddressService {
         return  deliveryAddressRepository.findById(idParseLong).get();
     }
 
-    public List<DeliveryAddress> getAllDeliveryAddressesByUserId(String id){
+    public List<AddressResponseDTO> getAllDeliveryAddressesByUserId(String id){
         if(id == null || id == null) {
             throw new InvalidUserDataException("Informe os campos");
         }
@@ -47,10 +48,18 @@ public class DeliveryAddressService {
         User user = userRepository.findById(userIdParseLong).orElseThrow(
                 () -> new UserNotFoundExeption("Usuário não encontrado."));
 
-        return user.getDeliveryAddresses();
-    }
+        List<DeliveryAddress> addressList = deliveryAddressRepository.findAllByUser(user);
+
+        List<AddressResponseDTO> parseAddresToResponseDTO = addressList
+                .stream()
+                .map(AddressResponseDTO::fromEntity).toList();
+
+        return parseAddresToResponseDTO;
+    };
 
     public void changeFavoriteAddress(ChangeFavoriteAddressRequestDTO deliveryAddress){
+        System.out.println(deliveryAddress.addressId());
+        System.out.println(deliveryAddress.clientId());
         if(deliveryAddress.clientId() == null || deliveryAddress.addressId() == null) {
                 throw new InvalidUserDataException("Informe os campos");
         }
@@ -69,7 +78,9 @@ public class DeliveryAddressService {
 
         if(!deliveryAddressRepository.existsById(deliveryAddressParseLong)) { return; }
 
-        for(DeliveryAddress d : user.getDeliveryAddresses()) {
+        List<DeliveryAddress> deliveryAddressList = deliveryAddressRepository.findAllByUser(user);
+
+        for(DeliveryAddress d : deliveryAddressList) {
             if(!d.getId().equals(deliveryAddressParseLong)) {
                 d.setFavorite(false);
                 deliveryAddressRepository.save(d);
