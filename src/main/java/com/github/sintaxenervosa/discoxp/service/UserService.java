@@ -33,7 +33,6 @@ public class UserService {
         this.defaultUserValidator = defaultUserValidator;
     }
 
-    // TIPO UUS
     public CreateUserResponseDTO createUser(CreateUserRequestDTO request) {
         userValidator.validateUserCreation(request);
         String encodedPassword = passwordEncoder.encode(request.password());
@@ -44,14 +43,20 @@ public class UserService {
         return CreateUserResponseDTO.fromEntity(savedUser);
     }
 
-    public LoginResponseDto loginUser(LoginRequestDto request){
+    public LoginResponseDto loginUser(LoginRequestDto request) {
         userValidator.validateLogin(request);
 
-        User user = userRepository.findByEmail(request.email()).get();
+        User user = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        boolean validPassword = passwordEncoder.matches(request.password(), user.getPassword());
+        if (!validPassword) {
+            throw new RuntimeException("Email e/ou senha inválidos");
+        }
+
         return LoginResponseDto.fromEntity(user);
     }
 
-    //Listar todos os usuários
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }

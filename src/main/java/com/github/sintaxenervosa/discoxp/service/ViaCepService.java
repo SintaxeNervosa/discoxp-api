@@ -1,5 +1,6 @@
 package com.github.sintaxenervosa.discoxp.service;
 
+
 import com.github.sintaxenervosa.discoxp.dto.address.RequestAddressDTO;
 import com.github.sintaxenervosa.discoxp.exception.address.DuplicateAddressException;
 import com.github.sintaxenervosa.discoxp.exception.address.InvalidAddressException;
@@ -15,11 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
@@ -89,7 +87,7 @@ public class ViaCepService {
         User user = userRepository.findById(Long.parseLong(request.id()))
                 .orElseThrow(() -> new UserNotFoundExeption("Usuário não encontrado"));
 
-        if(user.getDeliveryAddresses().isEmpty()) {
+        if (user.getDeliveryAddresses().isEmpty()) {
             deliveryAddress.setFavorite(true);
         }
 
