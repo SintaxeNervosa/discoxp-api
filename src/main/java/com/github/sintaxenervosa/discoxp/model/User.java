@@ -48,11 +48,13 @@ public class User {
     private Gender gender;
 
     @OneToOne(cascade = CascadeType.REMOVE, fetch =  FetchType.LAZY)
+    @JsonIgnore
     private BillingAddress billingAddress;
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
-        private List<DeliveryAddress> deliveryAddresses;
+    @JsonIgnore
+    private List<DeliveryAddress> deliveryAddresses;
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Order> orders;

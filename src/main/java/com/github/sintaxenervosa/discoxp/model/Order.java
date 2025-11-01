@@ -29,14 +29,25 @@ public class Order {
     @Column(nullable = false)
     private BigDecimal freight;
 
+    private BigDecimal totalOrderItems;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "order")
     private List<OrderItem> orderItems;
 
     @ManyToOne
     @JoinColumn(name = "address_id")
     private DeliveryAddress deliveryAddress;
+
+    public Order(PaymentMethod paymentMethod, BigDecimal freight, User user, DeliveryAddress deliveryAddress) {
+        this.paymentMethod = paymentMethod;
+        this.freight = freight;
+        this.user = user;
+        this.deliveryAddress = deliveryAddress;
+    }
+
+    public Order() { }
 }

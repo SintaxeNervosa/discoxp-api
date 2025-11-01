@@ -28,4 +28,13 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public OrderItem(int quantity, BigDecimal total, Order order, Product product) {
+        this.quantity = quantity;
+        this.total = total;
+        this.order = order;
+        this.product = product;
+    }
+
+    public OrderItem() {};
 }

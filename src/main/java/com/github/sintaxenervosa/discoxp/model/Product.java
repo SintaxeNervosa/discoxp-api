@@ -28,7 +28,7 @@ public class Product {
     @Column(nullable = false, length = 2000)
     private String description;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, precision = 8, scale = 2)
     private BigDecimal price;
 
     @Column(name="quantity",nullable = false)
@@ -36,7 +36,6 @@ public class Product {
 
     private boolean status = true;
 
-    // @Lazy
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImageProduct> images = new ArrayList<>();
 
