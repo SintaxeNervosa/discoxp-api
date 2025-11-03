@@ -5,7 +5,7 @@ import com.github.sintaxenervosa.discoxp.dto.address.ProductAndQuantityRequestDT
 public record OrderRequestDTO(
         String userId,
         String paymentMethod,
-        String frete,
+        String freight,
         ProductAndQuantityRequestDTO ...products
     ) {
 }

@@ -55,7 +55,7 @@ public class OrderService {
         // criar o pedido
         Order order = new Order(
                 PaymentMethod.valueOf(request.paymentMethod()),
-                BigDecimal.valueOf(Double.parseDouble(request.frete())),
+                BigDecimal.valueOf(Double.parseDouble(request.freight())),
                 user,
                 deliveryAddressRepository.getIsFavoriteAddressByUser(user)
         );
@@ -109,8 +109,8 @@ public class OrderService {
         }
 
         return totalOrder;
-
     }
+
     public List<OrderResponseDTO> findAllOrdersByUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new InvalidUserDataException("Usuário não encontrado."));

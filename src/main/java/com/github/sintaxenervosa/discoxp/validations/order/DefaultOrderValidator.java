@@ -26,7 +26,7 @@ public class DefaultOrderValidator implements OrderValidator, QuantityValidator,
         validatePayment(request.paymentMethod());
 
         // validar o frete
-        validateFrete(request.frete());
+        validateFrete(request.freight());
 
         if (!ValidationErrorRegistry.hasErrors()) {
             return;
