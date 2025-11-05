@@ -3,8 +3,8 @@ package com.github.sintaxenervosa.discoxp.dto.user;
 import com.github.sintaxenervosa.discoxp.model.Group;
 import com.github.sintaxenervosa.discoxp.model.User;
 
-public record LoginResponseDto(Long id, Group group) {
+public record LoginResponseDto(Long id, Group group, String username) {
     public static LoginResponseDto fromEntity(User user){
-        return new LoginResponseDto(user.getId(), user.getGroupEnum());
+        return new LoginResponseDto(user.getId(), user.getGroupEnum(), user.getName());
     }
 }
