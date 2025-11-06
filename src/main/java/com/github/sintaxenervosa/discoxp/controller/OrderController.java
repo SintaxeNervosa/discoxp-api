@@ -1,5 +1,6 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
+import com.github.sintaxenervosa.discoxp.dto.order.CreateOrderResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.OrderRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.OrderResponseDTO;
 import com.github.sintaxenervosa.discoxp.service.OrderService;
@@ -17,9 +18,9 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<?> addOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
-        orderService.addOrder(orderRequestDTO);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<CreateOrderResponseDTO> addOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
+        CreateOrderResponseDTO orderResponse = orderService.addOrder(orderRequestDTO);
+        return ResponseEntity.ok(orderResponse);
     };
 
     @GetMapping("{id}")

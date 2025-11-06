@@ -1,6 +1,7 @@
 package com.github.sintaxenervosa.discoxp.service;
 
 import com.github.sintaxenervosa.discoxp.dto.address.ProductAndQuantityRequestDTO;
+import com.github.sintaxenervosa.discoxp.dto.order.CreateOrderResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.OrderRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.OrderResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.orderItem.OrderItemResponseDTO;
@@ -31,7 +32,7 @@ public class OrderService {
     private final DeliveryAddressRepository deliveryAddressRepository;
 
     @Transactional
-    public void addOrder(OrderRequestDTO request) {
+    public CreateOrderResponseDTO addOrder(OrderRequestDTO request) {
         defaultOrderValidator.validateAddOrder(request); // validações de formulário
 
         // busca o id do usuário
@@ -93,7 +94,8 @@ public class OrderService {
         order.setTotalOrderItems(totalOrder(order, orderItems));
         System.out.println(order.getTotalOrderItems());
 
-        orderRepository.save(order);
+
+        return CreateOrderResponseDTO.fromEntity(orderRepository.save(order));
     }
 
 
