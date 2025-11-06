@@ -91,4 +91,12 @@ public class DeliveryAddressService {
             deliveryAddressRepository.save(d);
         }
     }
+
+    public AddressResponseDTO getFavoriteDeliveryAddressesByUserId(String id) {
+        User user = userRepository.findById(Long.parseLong(id)).orElseThrow(() ->
+                new UserNotFoundExeption("Usuário não encontrado"));
+
+        DeliveryAddress deliveryAddress = deliveryAddressRepository.getIsFavoriteAddressByUser(user);
+        return AddressResponseDTO.fromEntity(deliveryAddress);
+    }
 }

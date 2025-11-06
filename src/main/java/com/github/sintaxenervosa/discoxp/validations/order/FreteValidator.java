@@ -12,7 +12,7 @@ public interface FreteValidator {
         int value = 0;
 
         try {
-            value = Integer.parseInt(frete);
+            value = Integer.parseInt(frete); // arrumar
         } catch (IllegalArgumentException e) {
             ValidationErrorRegistry.addError("Frete inválido.");
             return;

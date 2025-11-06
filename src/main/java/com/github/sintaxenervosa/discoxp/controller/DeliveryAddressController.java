@@ -32,12 +32,18 @@ public class DeliveryAddressController {
         return ResponseEntity.status(201).build();
     }
 
+
     @GetMapping("{userId}")
     public ResponseEntity<List<AddressResponseDTO>> getAllDeliveryAddressesByUserId(@PathVariable("userId") String id) {
         List<AddressResponseDTO> deliveryAddressList = deliveryAddressService.getAllDeliveryAddressesByUserId(id);
         return ResponseEntity.status(200).body(deliveryAddressList) ;
     }
 
+    @GetMapping("favorite/{userId}")
+    public ResponseEntity<AddressResponseDTO> getFavoriteDeliveryAddressesByUserId(@PathVariable("userId") String id) {
+        AddressResponseDTO deliveryAddressList = deliveryAddressService.getFavoriteDeliveryAddressesByUserId(id);
+        return ResponseEntity.status(200).body(deliveryAddressList);
+    }
     @PutMapping
     public ResponseEntity<HttpStatusCode> updateFavoriteAddress(@RequestBody ChangeFavoriteAddressRequestDTO request) {
         deliveryAddressService.changeFavoriteAddress(request);

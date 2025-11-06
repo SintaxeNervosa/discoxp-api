@@ -54,5 +54,5 @@ public class ClientController {
     public ResponseEntity<HttpStatusCode> updateClient(@RequestBody UpdateUserRequestDTO request) {
         clientService.changeClient(request);
         return ResponseEntity.status(200).body(HttpStatus.NO_CONTENT);
-    } 
+    }
 }
