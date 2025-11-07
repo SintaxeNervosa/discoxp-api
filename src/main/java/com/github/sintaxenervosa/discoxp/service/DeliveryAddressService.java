@@ -96,7 +96,7 @@ public class DeliveryAddressService {
         User user = userRepository.findById(Long.parseLong(id)).orElseThrow(() ->
                 new UserNotFoundExeption("Usuário não encontrado"));
 
-        DeliveryAddress deliveryAddress = deliveryAddressRepository.getIsFavoriteAddressByUser(user);
+        DeliveryAddress deliveryAddress = deliveryAddressRepository.findByUserAndIsFavoriteTrue(user);
         return AddressResponseDTO.fromEntity(deliveryAddress);
     }
 }

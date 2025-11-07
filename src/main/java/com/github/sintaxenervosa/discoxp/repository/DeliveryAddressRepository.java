@@ -10,5 +10,5 @@ public interface DeliveryAddressRepository extends JpaRepository<DeliveryAddress
     boolean existsByUserIdAndCepAndNumber(Long userId, String cep, String numero);
     List<DeliveryAddress> findAllByUser(User user);
     boolean existsById(Long id);
-    DeliveryAddress getIsFavoriteAddressByUser(User user);
+    DeliveryAddress findByUserAndIsFavoriteTrue(User user);
 }

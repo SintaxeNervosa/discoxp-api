@@ -58,7 +58,7 @@ public class OrderService {
                 PaymentMethod.valueOf(request.paymentMethod()),
                 BigDecimal.valueOf(Double.parseDouble(request.freight())),
                 user,
-                deliveryAddressRepository.getIsFavoriteAddressByUser(user)
+                deliveryAddressRepository.findByUserAndIsFavoriteTrue(user)
         );
 
         // faz a persistência do pedido

@@ -19,6 +19,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<CreateOrderResponseDTO> addOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
+            System.out.println(orderRequestDTO.paymentMethod());
         CreateOrderResponseDTO orderResponse = orderService.addOrder(orderRequestDTO);
         return ResponseEntity.ok(orderResponse);
     };
