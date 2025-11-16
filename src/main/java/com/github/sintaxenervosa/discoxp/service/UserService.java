@@ -37,7 +37,7 @@ public class UserService {
         userValidator.validateUserCreation(request);
         String encodedPassword = passwordEncoder.encode(request.password());
         User user = new User(request);
-
+        System.out.println(user.getName());
         user.setPassword(encodedPassword);
         User savedUser = userRepository.save(user);
         return CreateUserResponseDTO.fromEntity(savedUser);

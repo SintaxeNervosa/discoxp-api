@@ -7,7 +7,7 @@ import com.github.sintaxenervosa.discoxp.validations.ValidationErrorRegistry;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DefaultOrderValidator implements OrderValidator, QuantityValidator, PaymentValidator, FreteValidator {
+public class DefaultOrderValidator implements OrderValidator, QuantityValidator, PaymentValidator, FreteValidator, AddressValidator {
 
     @Override
     public void validateAddOrder(OrderRequestDTO request) {
@@ -27,6 +27,9 @@ public class DefaultOrderValidator implements OrderValidator, QuantityValidator,
 
         // validar o frete
         validateFrete(request.freight());
+
+        // validar endereço de entrega
+        validateDeliveryAddress(request.deliveryAddressId());
 
         if (!ValidationErrorRegistry.hasErrors()) {
             return;

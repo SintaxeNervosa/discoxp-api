@@ -74,7 +74,6 @@ public class User {
         this.cpf = userRequest.cpf();
         this.groupEnum = Group.valueOf(userRequest.group());
         this.dateOfBirth = userRequest.dateOfBirth();
-        this.gender = Gender.valueOf(userRequest.gender());
     }
 
     public User(CreateClientRequestDTO clientRequestDTO) {

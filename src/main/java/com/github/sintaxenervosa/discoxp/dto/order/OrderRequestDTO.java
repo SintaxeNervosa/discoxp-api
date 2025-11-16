@@ -6,6 +6,7 @@ public record OrderRequestDTO(
         String userId,
         String paymentMethod,
         String freight,
+        String deliveryAddressId,
         ProductAndQuantityRequestDTO ...products
     ) {
 }

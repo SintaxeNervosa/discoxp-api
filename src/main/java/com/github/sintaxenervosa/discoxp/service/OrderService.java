@@ -5,6 +5,7 @@ import com.github.sintaxenervosa.discoxp.dto.order.CreateOrderResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.OrderRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.OrderResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.orderItem.OrderItemResponseDTO;
+import com.github.sintaxenervosa.discoxp.exception.address.InvalidAddressException;
 import com.github.sintaxenervosa.discoxp.exception.order.InvalidOrderException;
 import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
 import com.github.sintaxenervosa.discoxp.exception.user.UserNotFoundExeption;
@@ -25,7 +26,7 @@ import java.util.Optional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final OrderItemRepository  orderItemRepository;
+    private final OrderItemRepository orderItemRepository;
     private final DefaultOrderValidator defaultOrderValidator;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
@@ -53,12 +54,17 @@ public class OrderService {
             }
         }
 
+        // valida o endereço de entrega
+        DeliveryAddress deliveryAddress =
+                deliveryAddressRepository.findById(Long.parseLong(request.deliveryAddressId()))
+                        .orElseThrow(() -> new InvalidAddressException("Endereço não encontrado."));
+
         // criar o pedido
         Order order = new Order(
                 PaymentMethod.valueOf(request.paymentMethod()),
                 BigDecimal.valueOf(Double.parseDouble(request.freight())),
                 user,
-                deliveryAddressRepository.findByUserAndIsFavoriteTrue(user)
+                deliveryAddress
         );
 
         // faz a persistência do pedido

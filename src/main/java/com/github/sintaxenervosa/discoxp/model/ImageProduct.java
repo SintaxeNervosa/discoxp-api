@@ -29,7 +29,7 @@ public class ImageProduct {
     private String name;
 
     @Lob
-    @Column(columnDefinition="LONGBLOB")
+    @Column(columnDefinition="LONGBLOB") // colocar para 10mb
     private byte[] imageData;
 
     @ManyToOne(fetch= FetchType.LAZY)
