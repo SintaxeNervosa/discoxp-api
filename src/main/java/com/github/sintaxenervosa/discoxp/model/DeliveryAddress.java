@@ -41,9 +41,33 @@ public class DeliveryAddress {
     private boolean isFavorite = false;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany
     private List<OrderItem> orderItems;
+
+    public DeliveryAddress(Long id, String uf, String city, String neighborhood, String complement, String number, String street, String cep) {
+        this.id = id;
+        this.uf = uf;
+        this.city = city;
+        this.neighborhood = neighborhood;
+        this.complement = complement;
+        this.number = number;
+        this.street = street;
+        this.cep = cep;
+    }
+
+    public DeliveryAddress(String uf, String city, String neighborhood, String complement, String number, String street, String cep) {
+        this.uf = uf;
+        this.city = city;
+        this.neighborhood = neighborhood;
+        this.complement = complement;
+        this.number = number;
+        this.street = street;
+        this.cep = cep;
+    }
+
+    public DeliveryAddress() {}
 }
 

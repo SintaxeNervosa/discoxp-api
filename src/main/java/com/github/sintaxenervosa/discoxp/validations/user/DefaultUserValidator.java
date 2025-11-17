@@ -2,7 +2,6 @@ package com.github.sintaxenervosa.discoxp.validations.user;
 
 import com.github.sintaxenervosa.discoxp.validations.ValidationErrorRegistry;
 
-import org.hibernate.usertype.UserType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 

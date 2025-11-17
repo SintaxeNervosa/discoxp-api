@@ -36,6 +36,6 @@ public class BillingAddress {
     private String estado;
 
     @OneToOne
-    @JoinColumn(name = "billingAddress")
+    @JoinColumn(name = "user_id")
     private User user;
 }

@@ -7,6 +7,7 @@ import com.github.sintaxenervosa.discoxp.dto.order.OrderResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.orderItem.OrderItemResponseDTO;
 import com.github.sintaxenervosa.discoxp.exception.address.InvalidAddressException;
 import com.github.sintaxenervosa.discoxp.exception.order.InvalidOrderException;
+import com.github.sintaxenervosa.discoxp.exception.product.ProductNotFoundException;
 import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
 import com.github.sintaxenervosa.discoxp.exception.user.UserNotFoundExeption;
 import com.github.sintaxenervosa.discoxp.model.*;
@@ -77,7 +78,8 @@ public class OrderService {
 
         // adiciona o itens no pedido
         for(ProductAndQuantityRequestDTO p : request.products()) {
-            temp = productRepository.findById(Long.parseLong(p.productId())).get();
+            temp = productRepository.findById(Long.parseLong(p.productId())).orElseThrow(() -> new ProductNotFoundException("Produto não encontrado."));
+
             OrderItem orderItem = new OrderItem(
                     quantity = Integer.parseInt(p.quantity()),
                     totalOrderItem(temp, quantity),
@@ -98,8 +100,6 @@ public class OrderService {
 
         // calcula o total do pedido
         order.setTotalOrderItems(totalOrder(order, orderItems));
-        System.out.println(order.getTotalOrderItems());
-
 
         return CreateOrderResponseDTO.fromEntity(orderRepository.save(order));
     }

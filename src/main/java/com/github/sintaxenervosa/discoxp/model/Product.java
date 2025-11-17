@@ -8,7 +8,6 @@ import com.github.sintaxenervosa.discoxp.dto.product.UpdateProductRequestDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.context.annotation.Lazy;
 
 @Getter
 @Setter
@@ -49,6 +48,23 @@ public class Product {
         this.description = product.description();
         this.price = product.price();
         this.quantity = product.quantity();
+    }
+
+    public Product(Long id, String name, double evaluation, String description, BigDecimal price, Integer quantity) {
+        this.id = id;
+        this.name = name;
+        this.evaluation = evaluation;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    public Product(String name, double evaluation, String description, BigDecimal price, Integer quantity) {
+        this.name = name;
+        this.evaluation = evaluation;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
     }
 
     public Product() { }

@@ -3,8 +3,10 @@ package com.github.sintaxenervosa.discoxp.validations.order;
 import com.github.sintaxenervosa.discoxp.dto.address.ProductAndQuantityRequestDTO;
 import com.github.sintaxenervosa.discoxp.validations.ValidationErrorRegistry;
 
+import java.util.List;
+
 public interface QuantityValidator {
-    default void validateQuantity(ProductAndQuantityRequestDTO ...product) {
+    default void validateQuantity(List<ProductAndQuantityRequestDTO> product) {
         int number;
 
         for(ProductAndQuantityRequestDTO p : product) {

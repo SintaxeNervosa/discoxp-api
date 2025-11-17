@@ -52,7 +52,7 @@ public class User {
     private BillingAddress billingAddress;
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "user_id")
     @JsonIgnore
     private List<DeliveryAddress> deliveryAddresses;
 
@@ -85,7 +85,19 @@ public class User {
     }
 
     // client
-    public User(String name, String email, String password, Group groupEnum, LocalDate dateOfBirth, Gender gender) {
+    public User(String name, String cpf, String email, String password, Group groupEnum, LocalDate dateOfBirth, Gender gender) {
+        this.name = name;
+        this.cpf = cpf;
+        this.email = email;
+        this.password = password;
+        this.groupEnum = groupEnum;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+    }
+
+    // client
+    public User(Long id, String name, String email, String password, Group groupEnum, LocalDate dateOfBirth, Gender gender) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;

@@ -1,12 +1,9 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
-import java.net.http.HttpHeaders;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import javax.naming.InvalidNameException;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
@@ -15,8 +12,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,8 +21,6 @@ import com.github.sintaxenervosa.discoxp.model.ImageProduct;
 import com.github.sintaxenervosa.discoxp.repository.ImgProductRepository;
 import com.github.sintaxenervosa.discoxp.service.ImgProductService;
 
-import jakarta.servlet.Servlet;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.tika.Tika;
 

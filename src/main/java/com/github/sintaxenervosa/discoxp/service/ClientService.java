@@ -9,8 +9,6 @@ import com.github.sintaxenervosa.discoxp.validations.user.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.github.sintaxenervosa.discoxp.dto.client.UpdateClientRequestDTO;
-
 @Service
 @RequiredArgsConstructor
 public class ClientService {

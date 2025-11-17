@@ -34,6 +34,7 @@ public class DefaultOrderValidator implements OrderValidator, QuantityValidator,
         if (!ValidationErrorRegistry.hasErrors()) {
             return;
         }
+
         String errorMessage = ValidationErrorRegistry.getErrorMessage();
 
         throw new InvalidOrderException(errorMessage);

@@ -4,6 +4,11 @@ import com.github.sintaxenervosa.discoxp.validations.ValidationErrorRegistry;
 
 public interface AddressValidator {
     default void validateDeliveryAddress(String addressId) {
+        if(addressId == null) {
+            ValidationErrorRegistry.addError("Informe o endereço.");
+            return;
+        }
+
         if(addressId.isBlank()) {
             ValidationErrorRegistry.addError("Informe o endereço.");
             return;
