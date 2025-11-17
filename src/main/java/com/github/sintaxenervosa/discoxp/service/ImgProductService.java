@@ -74,28 +74,6 @@ public class ImgProductService {
         return imgProductRepository.findByProduct_Id(productId);
     }
 
-    private static byte[] compressImage(MultipartFile file, float compressQuality) throws IOException { // tirar esse
-        // try cath
-        BufferedImage iamge = ImageIO.read(file.getInputStream());
-
-        ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
-
-        ImageWriteParam param = writer.getDefaultWriteParam();
-        param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        param.setCompressionQuality(compressQuality); // Valor entre 0 e 1 (1 = melhor qualidade, 0 = maior compressão)
-
-        ByteArrayOutputStream byteArraySaida = new ByteArrayOutputStream();
-        ImageOutputStream imageSaida = ImageIO.createImageOutputStream(byteArraySaida);
-        writer.setOutput(imageSaida);
-
-        writer.write(null, new IIOImage(iamge, null, null), param);
-
-        imageSaida.close();
-        byteArraySaida.close();
-        writer.dispose();
-
-        return byteArraySaida.toByteArray();
-    }
 
     public void deleteProductImage(Long idProduct, Long idImageProduct) {
         Optional<ImageProduct> imageExist = imgProductRepository.findById(idImageProduct);

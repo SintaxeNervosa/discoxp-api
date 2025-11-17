@@ -26,8 +26,6 @@ import com.github.sintaxenervosa.discoxp.model.ImageProduct;
 import com.github.sintaxenervosa.discoxp.repository.ImgProductRepository;
 import com.github.sintaxenervosa.discoxp.service.ImgProductService;
 
-import jakarta.servlet.Servlet;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.tika.Tika;
 
