@@ -1,12 +1,14 @@
 package com.github.sintaxenervosa.discoxp.service;
 
 import com.github.sintaxenervosa.discoxp.dto.address.ProductAndQuantityRequestDTO;
+import com.github.sintaxenervosa.discoxp.dto.order.ChangeOrderStatusRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.CreateOrderResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.OrderRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.OrderResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.orderItem.OrderItemResponseDTO;
 import com.github.sintaxenervosa.discoxp.exception.address.InvalidAddressException;
 import com.github.sintaxenervosa.discoxp.exception.order.InvalidOrderException;
+import com.github.sintaxenervosa.discoxp.exception.order.OrderNotFoundException;
 import com.github.sintaxenervosa.discoxp.exception.product.ProductNotFoundException;
 import com.github.sintaxenervosa.discoxp.exception.user.InvalidUserDataException;
 import com.github.sintaxenervosa.discoxp.exception.user.UserNotFoundExeption;
@@ -104,7 +106,6 @@ public class OrderService {
         return CreateOrderResponseDTO.fromEntity(orderRepository.save(order));
     }
 
-
     public BigDecimal totalOrderItem(Product product, Integer quantity) {
         return BigDecimal.valueOf(product.getPrice().doubleValue() * quantity);
     }
@@ -155,5 +156,15 @@ public class OrderService {
             );
             return orderResponseDTO;
         }).toList();
+    }
+
+    public void changeOrderStatus(ChangeOrderStatusRequestDTO request, String id) {
+        defaultOrderValidator.validateChangeOrderStatus(request, id);
+
+        Order order = orderRepository.findById(Long.parseLong(id)).orElseThrow(
+                () ->  new OrderNotFoundException("Pedido não encontrado"));
+
+        order.setOrderStatus(OrderStatus.valueOf(request.status()));
+        orderRepository.save(order);
     }
 }

@@ -1,10 +1,12 @@
 package com.github.sintaxenervosa.discoxp.controller;
 
+import com.github.sintaxenervosa.discoxp.dto.order.ChangeOrderStatusRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.CreateOrderResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.OrderRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.OrderResponseDTO;
 import com.github.sintaxenervosa.discoxp.service.OrderService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +23,16 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateOrderResponseDTO> addOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
-        CreateOrderResponseDTO orderResponse = orderService.addOrder(orderRequestDTO);
+    public ResponseEntity<CreateOrderResponseDTO> addOrder(@RequestBody OrderRequestDTO request) {
+        CreateOrderResponseDTO orderResponse = orderService.addOrder(request);
         return ResponseEntity.ok(orderResponse);
     };
+
+    @PutMapping("{id}")
+    public ResponseEntity<HttpStatusCode> updateOrderStatus(@PathVariable String id, @RequestBody ChangeOrderStatusRequestDTO request) {
+        orderService.changeOrderStatus(request, id);
+        return ResponseEntity.status(201).build();
+    }
 
     @GetMapping("{id}")
     public ResponseEntity<List<OrderResponseDTO>> findAllOrdersByUser(@PathVariable("id") Long userId) {
