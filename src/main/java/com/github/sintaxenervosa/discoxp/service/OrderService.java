@@ -143,4 +143,17 @@ public class OrderService {
 
         return orderResponseDTOList;
     }
+
+    public List<OrderResponseDTO> findAllOrders() {
+        return orderRepository.findAllByOrderByOrderDateDesc().stream().map((e) -> {
+            OrderResponseDTO orderResponseDTO = new OrderResponseDTO(
+                    e.getOrderId(),
+                    e.getOrderDate(),
+                    e.getOrderStatus(),
+                    e.getTotalOrderItems().add(e.getFreight()),
+                    List.of()
+            );
+            return orderResponseDTO;
+        }).toList();
+    }
 }

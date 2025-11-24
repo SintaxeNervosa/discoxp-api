@@ -12,10 +12,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/order")
-@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
+
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     @PostMapping
     public ResponseEntity<CreateOrderResponseDTO> addOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
@@ -26,5 +29,10 @@ public class OrderController {
     @GetMapping("{id}")
     public ResponseEntity<List<OrderResponseDTO>> findAllOrdersByUser(@PathVariable("id") Long userId) {
         return ResponseEntity.ok(orderService.findAllOrdersByUser(userId));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderResponseDTO>> findAllOrders() {
+        return ResponseEntity.ok(orderService.findAllOrders());
     }
 }
