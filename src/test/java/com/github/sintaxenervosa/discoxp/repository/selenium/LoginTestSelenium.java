@@ -21,7 +21,6 @@ public class LoginTestSelenium {
         driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
-
     @AfterEach
     void teardown() {
         if (driver != null) {

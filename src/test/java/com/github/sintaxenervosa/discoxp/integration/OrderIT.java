@@ -1,4 +1,4 @@
-package com.github.sintaxenervosa.discoxp.service.it;
+package com.github.sintaxenervosa.discoxp.integration;
 
 import com.github.sintaxenervosa.discoxp.dto.address.ProductAndQuantityRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.CreateOrderResponseDTO;
