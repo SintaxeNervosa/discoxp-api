@@ -1,7 +1,9 @@
 package com.github.sintaxenervosa.discoxp.dto.order;
 
 import com.github.sintaxenervosa.discoxp.dto.order.orderItem.OrderItemResponseDTO;
+import com.github.sintaxenervosa.discoxp.model.DeliveryAddress;
 import com.github.sintaxenervosa.discoxp.model.OrderStatus;
+import com.github.sintaxenervosa.discoxp.model.PaymentMethod;
 import io.micrometer.common.lang.Nullable;
 
 import java.math.BigDecimal;
@@ -13,4 +15,7 @@ public record OrderResponseDTO (
         LocalDate orderDate,
         OrderStatus status,
         BigDecimal totalPrice,
+        DeliveryAddress deliveryAddress,
+        PaymentMethod paymentMethod,
+        BigDecimal freight,
         @Nullable List<OrderItemResponseDTO> orderItemResponseDTOList) { }

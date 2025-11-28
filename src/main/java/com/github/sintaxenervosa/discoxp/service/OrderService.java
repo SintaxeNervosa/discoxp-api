@@ -139,6 +139,9 @@ public class OrderService {
                     order.getOrderDate(),
                     order.getOrderStatus(),
                     order.getTotalOrderItems(),
+                    order.getDeliveryAddress(),
+                    order.getPaymentMethod(),
+                    order.getFreight(),
                     orderItemResponseDTOList));
         }
 
@@ -151,7 +154,10 @@ public class OrderService {
                     e.getOrderId(),
                     e.getOrderDate(),
                     e.getOrderStatus(),
-                    e.getTotalOrderItems().add(e.getFreight()),
+                    e.getTotalOrderItems(),
+                    e.getDeliveryAddress(),
+                    e.getPaymentMethod(),
+                    e.getFreight(),
                     List.of()
             );
             return orderResponseDTO;
