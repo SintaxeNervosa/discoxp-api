@@ -5,7 +5,6 @@ import com.github.sintaxenervosa.discoxp.dto.order.CreateOrderResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.OrderRequestDTO;
 import com.github.sintaxenervosa.discoxp.dto.order.OrderResponseDTO;
 import com.github.sintaxenervosa.discoxp.service.OrderService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -67,6 +67,7 @@ class OrderServiceTest {
         // simula o retorno do produto  ao chamar a repository de DeliveryAddress
         Mockito.when(deliveryAddressRepository.findById(1l)).thenReturn(Optional.of(deliveryAddress));
 
+        // item pedido
         ProductAndQuantityRequestDTO productAndQuantityRequestDTO = new ProductAndQuantityRequestDTO(
                 productRepository.findById(1l).get().getId().toString(),
                 "1");
@@ -84,7 +85,7 @@ class OrderServiceTest {
 
         // simula um retorno do objeto recebido (tipo jpa)
         Mockito.when(orderItemRepository.save(Mockito.any(OrderItem.class))).thenAnswer(
-                item -> {
+                    item -> {
                     OrderItem orderItem = item.getArgument(0);
                     orderItem.setId(1l);
                     return orderItem;
