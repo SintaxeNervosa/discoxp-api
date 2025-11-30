@@ -14,8 +14,9 @@ public record OrderResponseDTO (
         Integer orderId,
         LocalDate orderDate,
         OrderStatus status,
-        BigDecimal totalPrice,
+        BigDecimal subtotal,
         DeliveryAddress deliveryAddress,
         PaymentMethod paymentMethod,
         BigDecimal freight,
+            BigDecimal total,
         @Nullable List<OrderItemResponseDTO> orderItemResponseDTOList) { }
