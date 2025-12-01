@@ -2,13 +2,16 @@ package com.github.sintaxenervosa.discoxp.dto.order.orderItem;
 
 import com.github.sintaxenervosa.discoxp.model.OrderItem;
 
-public record OrderItemResponseDTO (Long produtId, byte[] imageFile, String name, Integer quantity) {
+import java.math.BigDecimal;
+
+public record OrderItemResponseDTO (Long produtId, String name, Integer quantity, BigDecimal unitPrice, byte[] imageFile) {
     public static OrderItemResponseDTO fromEntity(OrderItem orderItem) {
         return new OrderItemResponseDTO(
                 orderItem.getProduct().getId(),
-                orderItem.getProduct().getImages().get(0).getImageData(),
                 orderItem.getProduct().getName(),
-                orderItem.getQuantity()
+                orderItem.getQuantity(),
+                orderItem.getProduct().getPrice(),
+                orderItem.getProduct().getImages().get(0).getImageData()
         );
     }
 }
