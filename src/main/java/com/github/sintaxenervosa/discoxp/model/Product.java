@@ -35,7 +35,7 @@ public class Product {
 
     private boolean status = true;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE})//orphanRemoval = true + CascadeType.ALL sigf q qnd atualiza o produto, o JPA/Hibernate deleta LITERALMETE TODAS as imagens antigas!
     private List<ImageProduct> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
