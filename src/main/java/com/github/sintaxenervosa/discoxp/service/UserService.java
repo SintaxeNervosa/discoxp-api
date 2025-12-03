@@ -124,13 +124,17 @@ public class UserService {
         newUser.setName(request.name());
         newUser.setCpf(request.cpf());
         newUser.setGroupEnum(Group.valueOf(request.group()));
+        newUser.setBillingAddress(savedUser.getBillingAddress());
+        newUser.setDeliveryAddresses(savedUser.getDeliveryAddresses());
 
-        if(newUser.getGroupEnum().equals(Group.CLIENT.toString())) {
+        if(newUser.getGroupEnum().equals(Group.CLIENT)) {
             newUser.setDateOfBirth(request.dateOfBirth());
             newUser.setGender(Gender.valueOf(request.gender()));
+            System.out.println("CLIENTE");
         } else {
             newUser.setDateOfBirth(savedUser.getDateOfBirth());
             newUser.setGender(savedUser.getGender());
+            System.out.println("NÃO CLIENTE");
         }
 
         userRepository.save(newUser);
