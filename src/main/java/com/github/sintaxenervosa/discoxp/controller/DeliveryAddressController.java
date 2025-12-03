@@ -32,7 +32,6 @@ public class DeliveryAddressController {
         return ResponseEntity.status(201).build();
     }
 
-
     @GetMapping("{userId}")
     public ResponseEntity<List<AddressResponseDTO>> getAllDeliveryAddressesByUserId(@PathVariable("userId") String id) {
         List<AddressResponseDTO> deliveryAddressList = deliveryAddressService.getAllDeliveryAddressesByUserId(id);

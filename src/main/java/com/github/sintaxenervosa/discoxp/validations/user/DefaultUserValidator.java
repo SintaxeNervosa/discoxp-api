@@ -92,8 +92,10 @@ public class DefaultUserValidator implements UserValidator, EmailValidator, Pass
             }
         }
 
-        // validação de senha
-        validatePassword(request.password());
+        // caso envie alguma senha, faz a validação.
+        if(request.password() != "") {
+            validatePassword(request.password());
+        }
 
         // retorna caso não tenha erros
         if (!ValidationErrorRegistry.hasErrors()) {

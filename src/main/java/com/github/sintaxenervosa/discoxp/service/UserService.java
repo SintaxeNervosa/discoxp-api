@@ -1,5 +1,6 @@
 package com.github.sintaxenervosa.discoxp.service;
 
+import com.github.sintaxenervosa.discoxp.dto.address.RequestAddressDTO;
 import com.github.sintaxenervosa.discoxp.dto.client.ExistsCpfResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.client.ExistsEmailResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.*;
@@ -11,8 +12,10 @@ import com.github.sintaxenervosa.discoxp.model.User;
 import com.github.sintaxenervosa.discoxp.repository.UserRepository;
 
 import com.github.sintaxenervosa.discoxp.validations.user.DefaultUserValidator;
+import io.micrometer.common.lang.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,21 +28,42 @@ public class UserService {
     private final DefaultUserValidator userValidator;
     private final PasswordEncoder  passwordEncoder;
     private final DefaultUserValidator defaultUserValidator;
+    private final ViaCepService viaCepService;
 
-    public UserService(DefaultUserValidator userValidator, UserRepository userRepository, PasswordEncoder passwordEncoder, DefaultUserValidator defaultUserValidator){
+    public UserService(DefaultUserValidator userValidator, UserRepository userRepository, PasswordEncoder passwordEncoder, DefaultUserValidator defaultUserValidator, ViaCepService viaCepService){
         this.userValidator = userValidator;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.defaultUserValidator = defaultUserValidator;
+        this.viaCepService = viaCepService;
     }
 
-    public CreateUserResponseDTO createUser(CreateUserRequestDTO request) {
+    @Transactional
+    public CreateUserResponseDTO createUser(CreateUserRequestDTO request, @Nullable RequestAddressDTO deliveryAddress, @Nullable RequestAddressDTO billingAddress) {
         userValidator.validateUserCreation(request);
+
         String encodedPassword = passwordEncoder.encode(request.password());
         User user = new User(request);
-        System.out.println(user.getName());
         user.setPassword(encodedPassword);
         User savedUser = userRepository.save(user);
+
+        if(request.group().equals(Group.CLIENT.toString())) {
+            RequestAddressDTO newDeliveryAddress = new RequestAddressDTO(
+                    savedUser.getId().toString(),
+                    deliveryAddress.cep(),
+                    deliveryAddress.number(),
+                    deliveryAddress.complement());
+
+            RequestAddressDTO newBillingAddress = new RequestAddressDTO(
+                    savedUser.getId().toString(),
+                    billingAddress.cep(),
+                    billingAddress.number(),
+                    billingAddress.complement());
+
+            viaCepService.fyndCepFromDelivery(newDeliveryAddress);
+            viaCepService.findByCepFromAddress(newBillingAddress);
+        }
+
         return CreateUserResponseDTO.fromEntity(savedUser);
     }
 
@@ -91,12 +115,23 @@ public class UserService {
         newUser.setEmail(savedUser.getEmail());
 
         // dados que se alteram
-        newUser.setPassword(passwordEncoder.encode(request.password()));
+        if(request.password() == "") {
+            newUser.setPassword(savedUser.getPassword());
+        } else {
+            newUser.setPassword(passwordEncoder.encode(request.password()));
+        }
+
         newUser.setName(request.name());
         newUser.setCpf(request.cpf());
         newUser.setGroupEnum(Group.valueOf(request.group()));
-        newUser.setDateOfBirth(request.dateOfBirth());
-        newUser.setGender(Gender.valueOf(request.gender()));
+
+        if(newUser.getGroupEnum().equals(Group.CLIENT.toString())) {
+            newUser.setDateOfBirth(request.dateOfBirth());
+            newUser.setGender(Gender.valueOf(request.gender()));
+        } else {
+            newUser.setDateOfBirth(savedUser.getDateOfBirth());
+            newUser.setGender(savedUser.getGender());
+        }
 
         userRepository.save(newUser);
     }

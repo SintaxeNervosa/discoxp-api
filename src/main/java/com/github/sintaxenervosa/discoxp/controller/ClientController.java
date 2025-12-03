@@ -3,7 +3,6 @@ package com.github.sintaxenervosa.discoxp.controller;
 import com.github.sintaxenervosa.discoxp.dto.client.*;
 import com.github.sintaxenervosa.discoxp.dto.user.CreateUserResponseDTO;
 import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
-import com.github.sintaxenervosa.discoxp.model.User;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -37,7 +36,7 @@ public class ClientController {
                 request.dateOfBirth(),
                 request.gender());
 
-        return ResponseEntity.status(201).body(userService.createUser(dto));
+        return ResponseEntity.status(201).body(userService.createUser(dto, request.deliveryAddress(), request.billingAddress()));
     }
 
     @GetMapping("/email/{email}")

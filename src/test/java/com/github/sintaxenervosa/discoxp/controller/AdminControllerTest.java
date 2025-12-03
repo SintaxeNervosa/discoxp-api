@@ -70,7 +70,7 @@ public class AdminControllerTest {
         );
 
         Mockito.doThrow(new InvalidUserDataException("E-mail inválido"))
-                .when(userService).createUser(any());
+                .when(userService).createUser(any(), null, null);
 
         mockMvc.perform(post("/admin")
                         .contentType(MediaType.APPLICATION_JSON)

@@ -51,6 +51,7 @@ public class ViaCepService {
         User user = userRepository.findById(Long.parseLong(request.id()))
                 .orElseThrow(() -> new UserNotFoundExeption("Usuário não encontrado"));
 
+        System.out.println("Billing Address -> User ID: " + request.id());
         billingAddress.setUser(user);
         // salva o endereço de entrega
 
@@ -91,6 +92,7 @@ public class ViaCepService {
             deliveryAddress.setFavorite(true);
         }
 
+        System.out.println("Delivery Address -> User ID: " + request.id());
         deliveryAddress.setUser(user);
 
         if (deliveryAddressRepository.existsByUserIdAndCepAndNumber(user.getId(), deliveryAddress.getCep(), deliveryAddress.getNumber())) {

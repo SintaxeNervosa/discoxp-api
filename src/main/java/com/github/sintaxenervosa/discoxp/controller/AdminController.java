@@ -8,7 +8,6 @@ import com.github.sintaxenervosa.discoxp.dto.user.UpdateUserRequestDTO;
 import com.github.sintaxenervosa.discoxp.model.Product;
 import com.github.sintaxenervosa.discoxp.service.ProductService;
 import com.github.sintaxenervosa.discoxp.service.UserService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -38,13 +37,13 @@ public class AdminController {
 
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody CreateUserRequestDTO request) {
-        userService.createUser(request);
+        CreateUserRequestDTO newRequest = new CreateUserRequestDTO(request.name(), request.email(), request.group(), request.password(), request.cpf(), request.dateOfBirth(), "HOMEM");
+        userService.createUser(newRequest, null, null);
         return ResponseEntity.status(201).body("User created");
     };
 
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody UpdateUserRequestDTO request) {
-        System.out.println(request);
         userService.updateUser(request);
 
         return ResponseEntity.status(204).body(HttpStatus.NO_CONTENT);
@@ -62,7 +61,6 @@ public class AdminController {
 
     @PutMapping("/product/status/{id}")
     public ResponseEntity<HttpStatusCode> changeProductStatus(@PathVariable("id") String id) {
-        System.out.println(id);
         productService.changeProductStatus(id);
         return ResponseEntity.status(204).body(HttpStatus.NO_CONTENT);
     };
