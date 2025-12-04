@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import io.micrometer.common.lang.Nullable;
 
-public record CreateUserRequestDTO(
+public record   CreateUserRequestDTO(
         String name,
         String email,
         String group,

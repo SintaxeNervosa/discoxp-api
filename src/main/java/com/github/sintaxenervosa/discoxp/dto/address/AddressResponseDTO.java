@@ -2,7 +2,7 @@ package com.github.sintaxenervosa.discoxp.dto.address;
 
 import com.github.sintaxenervosa.discoxp.model.DeliveryAddress;
 
-public record AddressResponseDTO(Long id, String street, String neighborhood, String uf, String cep, boolean isFavorite) {
+public record AddressResponseDTO(Long id, String street, String neighborhood, String uf, String cep, boolean isFavorite, String number) {
     public static AddressResponseDTO fromEntity(DeliveryAddress deliveryAddress) {
         return new AddressResponseDTO(
                 deliveryAddress.getId(),
@@ -10,6 +10,7 @@ public record AddressResponseDTO(Long id, String street, String neighborhood, St
                 deliveryAddress.getNeighborhood(),
                 deliveryAddress.getUf(),
                 deliveryAddress.getCep(),
-                deliveryAddress.isFavorite());
+                deliveryAddress.isFavorite(),
+                deliveryAddress.getNumber());
     }
 }
